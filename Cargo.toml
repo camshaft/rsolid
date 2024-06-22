@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "rsolid",
+    "rsolid-bindgen", "xtask",
+]
+resolver = "2"

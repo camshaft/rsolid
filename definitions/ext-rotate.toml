@@ -1,0 +1,119 @@
+# X Axis
+[modules.xrot]
+docs = """
+Rotates children around the X axis by the given number of degrees.
+"""
+dimensions = 0
+operator = true
+code = """
+rotate([a, 0, 0]) children();
+"""
+
+[modules.xrot.parameters.angle]
+name = "a"
+type = "angle"
+default = 0.0
+
+[modules.xrot_cp]
+docs = """
+Rotates children around the X axis by the given number of degrees at a centerpoint.
+"""
+dimensions = 0
+operator = true
+code = """
+if (!is_undef(cp)) { translate(cp) rotate([a, 0, 0]) translate(-cp) children(); }
+else { rotate([a, 0, 0]) children(); }
+"""
+
+[modules.xrot_cp.constructors._default]
+arguments = ["angle"]
+
+[modules.xrot_cp.parameters.angle]
+name = "a"
+type = "angle"
+default = 0.0
+
+[modules.xrot_cp.parameters.centerpoint]
+name = "cp"
+type = "length3"
+alt = ["length"]
+
+# Y Axis
+[modules.yrot]
+docs = """
+Rotates children around the Y axis by the given number of degrees.
+"""
+dimensions = 0
+operator = true
+code = """
+rotate([0, a, 0]) children();
+"""
+
+[modules.yrot.parameters.angle]
+name = "a"
+type = "angle"
+default = 0.0
+
+[modules.yrot_cp]
+docs = """
+Rotates children around the Y axis by the given number of degrees at a centerpoint.
+"""
+dimensions = 0
+operator = true
+code = """
+if (!is_undef(cp)) { translate(cp) rotate([0, a, 0]) translate(-cp) children(); }
+else { rotate([0, a, 0]) children(); }
+"""
+
+[modules.yrot_cp.constructors._default]
+arguments = ["angle"]
+
+[modules.yrot_cp.parameters.angle]
+name = "a"
+type = "angle"
+default = 0.0
+
+[modules.yrot_cp.parameters.centerpoint]
+name = "cp"
+type = "length3"
+alt = ["length"]
+
+# Z Axis
+[modules.zrot]
+docs = """
+Rotates children around the Z axis by the given number of degrees.
+"""
+dimensions = 0
+operator = true
+code = """
+rotate([0, 0, a]) children();
+"""
+
+[modules.zrot.parameters.angle]
+name = "a"
+type = "angle"
+default = 0.0
+
+[modules.zrot_cp]
+docs = """
+Rotates children around the Z axis by the given number of degrees at a centerpoint.
+"""
+dimensions = 0
+operator = true
+code = """
+if (!is_undef(cp)) { translate(cp) rotate([0, 0, a]) translate(-cp) children(); }
+else { rotate([0, 0, a]) children(); }
+"""
+
+[modules.zrot_cp.constructors._default]
+arguments = ["angle"]
+
+[modules.zrot_cp.parameters.angle]
+name = "a"
+type = "angle"
+default = 0.0
+
+[modules.zrot_cp.parameters.centerpoint]
+name = "cp"
+type = "length3"
+alt = ["length"]

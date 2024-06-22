@@ -1,0 +1,38 @@
+[modules.xscale]
+docs = """
+Scales children by the given factor on the X axis.
+"""
+dimensions = 0
+operator = true
+code = """
+scale([x, 1, 1]) children();
+"""
+
+[modules.xscale.parameters.x]
+type = "scalar"
+
+[modules.yscale]
+docs = """
+Scales children by the given factor on the Y axis.
+"""
+dimensions = 0
+operator = true
+code = """
+scale([1, y, 1]) children();
+"""
+
+[modules.yscale.parameters.y]
+type = "scalar"
+
+[modules.zscale]
+docs = """
+Scales children by the given factor on the Z axis.
+"""
+dimensions = 0
+operator = true
+code = """
+scale([1, 1, z]) children();
+"""
+
+[modules.yscale.parameters.z]
+type = "scalar"

@@ -1,0 +1,45 @@
+[modules.bg]
+docs = """
+Ignore this subtree for the normal rendering process and draw it in transparent gray (all transformations are still applied to the nodes in this tree).
+
+Because the marked subtree is completely ignored, it might have unexpected effects in case it's used, for example, with the first object in a difference(). In that case this object is rendered in transparent gray, but it is not used as the base for the difference()!
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Modifier_Characters#Background_modifier"
+dimensions = 0
+operator = true
+code = """
+%children();
+"""
+
+[modules.dbg]
+docs = """
+Use this subtree as usual in the rendering process but also draw it unmodified in transparent pink.
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Modifier_Characters#Debug_modifier"
+dimensions = 0
+operator = true
+code = """
+#children();
+"""
+
+[modules.root]
+docs = """
+Ignore the rest of the design and use this subtree as design root.
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Modifier_Characters#Root_modifier"
+dimensions = 0
+operator = true
+code = """
+!children();
+"""
+
+[modules.disable]
+docs = """
+Simply ignore this entire subtree.
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Modifier_Characters#Disable_modifier"
+dimensions = 0
+operator = true
+code = """
+*children();
+"""

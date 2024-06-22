@@ -1,0 +1,70 @@
+# Square
+[modules.square]
+docs = """
+Creates a square or rectangle in the first quadrant.
+"""
+dimensions = 2
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/2D_Primitives#square"
+
+[modules.square.constructors._default]
+arguments = ["size"]
+
+[modules.square.parameters.size]
+docs = """
+single value, square with both sides this length
+2 value array [x,y], rectangle with dimensions x and y
+"""
+type = "length2"
+alt = ["length"]
+default = [1.0, 1.0]
+
+[modules.square.parameters.center]
+docs = """
+false (default), 1st (positive) quadrant, one corner at (0,0)
+true, square is centered at (0,0)
+"""
+type = "bool"
+default = false
+
+# Circle
+[modules.circle]
+docs = """
+Creates a circle at the origin.
+"""
+dimensions = 2
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/2D_Primitives#square"
+
+[modules.circle.constructors._default]
+arguments = ["radius"]
+
+[modules.circle.parameters.radius]
+name = "r"
+docs = """
+circle radius
+"""
+type = "length"
+default = 1.0
+
+[modules.circle.parameters.fragment_angle]
+name = "$fa"
+docs = """
+Fragment angle in degrees
+"""
+type = "angle"
+default = 12.0
+
+[modules.circle.parameters.fragment_size]
+name = "$fs"
+docs = """
+Fragment size in mm
+"""
+type = "length"
+default = 2.0
+
+[modules.circle.parameters.fragment_resolution]
+name = "$fn"
+docs = """
+Fragment resolution
+"""
+type = "fragment_resolution"
+default = 0.0

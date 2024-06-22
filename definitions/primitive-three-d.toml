@@ -1,0 +1,126 @@
+# Cube
+[modules.cube]
+docs = """
+Creates a cube or rectangular prism (i.e., a "box") in the first octant.
+"""
+dimensions = 3
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Primitive_Solids#cube"
+
+[modules.cube.constructors._default]
+arguments = ["size"]
+
+[modules.cube.parameters.size]
+docs = """
+When a single value is provided, the cube's sides will all be this length.
+When a coordinate is provided, a rectangular prism with dimensions x, y and z will be created.
+"""
+type = "length3"
+alt = [ "length" ]
+default = [1.0, 1.0, 1.0]
+
+[modules.cube.parameters.center]
+docs = """
+When center is true, the cube is centered on the origin.
+"""
+type = "bool"
+default = false
+
+# Sphere
+[modules.sphere]
+docs = """
+Creates a sphere at the origin of the coordinate system.
+"""
+dimensions = 3
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Primitive_Solids#sphere"
+
+[modules.sphere.constructors._default]
+arguments = ["radius"]
+
+[modules.sphere.parameters.radius]
+name = "r"
+docs = """
+This is the radius of the sphere. The resolution of the sphere is based on the size of the sphere and the $fa, $fs and $fn variables.
+"""
+type = "length"
+default = 1.0
+
+# TODO
+#[modules.sphere.parameters.diameter]
+#name = "d"
+#docs = """
+#This is the diameter of the sphere.
+#"""
+#type = "float"
+
+[modules.sphere.parameters.fragment_angle]
+name = "$fa"
+docs = """
+Fragment angle in degrees
+"""
+type = "angle"
+default = 12.0
+
+[modules.sphere.parameters.fragment_size]
+name = "$fs"
+docs = """
+Fragment size in mm
+"""
+type = "length"
+default = 2.0
+
+[modules.sphere.parameters.fragment_resolution]
+name = "$fn"
+docs = """
+Fragment resolution
+"""
+type = "fragment_resolution"
+default = 0.0
+
+# Cylinder
+[modules.cylinder]
+docs = """
+Creates a cylinder or cone centered about the z axis.
+"""
+dimensions = 3
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Primitive_Solids#cylinder"
+
+[modules.cylinder.constructors._default]
+arguments = ["height", "radius"]
+
+[modules.cylinder.constructors.cone]
+arguments = ["height", "radius_bottom", "radius_top"]
+
+[modules.cylinder.parameters.height]
+name = "h"
+docs = """
+Height of the cylinder or cone
+"""
+type = "length"
+
+[modules.cylinder.parameters.radius]
+name = "r"
+docs = """
+Radius of the cylinder
+"""
+type = "length"
+
+[modules.cylinder.parameters.radius_bottom]
+name = "r1"
+docs = """
+Radius of bottom cone
+"""
+type = "length"
+
+[modules.cylinder.parameters.radius_top]
+name = "r2"
+docs = """
+Radius of top cone
+"""
+type = "length"
+
+[modules.cylinder.parameters.center]
+docs = """
+If false (default), z ranges from 0 to h. If true, z ranges from -h/2 to +h/2.
+"""
+type = "bool"
+default = false

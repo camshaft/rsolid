@@ -1,0 +1,25 @@
+[modules.union]
+docs = """
+Creates a union of all its child nodes. This is the sum of all children (logical or).
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/CSG_Modelling#union"
+dimensions = 0
+operator = true
+
+[modules.difference]
+docs = """
+Subtracts the 2nd child node from the first one (logical and not).
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/CSG_Modelling#difference"
+dimensions = 0
+operator = true
+
+[modules.intersection]
+docs = """
+Creates the intersection of all child nodes. This keeps the overlapping portion (logical and).
+Only the area which is common or shared by all children is retained.
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/CSG_Modelling#intersection"
+dimensions = 0
+operator = true
+

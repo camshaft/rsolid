@@ -1,0 +1,133 @@
+[modules.scale]
+docs = """
+Scales its child elements using the specified vector.
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#scale"
+dimensions = 0
+operator = true
+
+[modules.scale.constructors._default]
+arguments = ["value"]
+
+[modules.scale.parameters.value]
+name = "v"
+type = "scalar3"
+alt = ["scalar"]
+
+[modules.resize]
+docs = """
+Modifies the size of the child object to match the given x,y, and z.
+
+resize() is a CGAL operation, and like others such as render() operates with full geometry, so even in preview this takes time to process.
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#resize"
+dimensions = 0
+operator = true
+
+[modules.resize.constructors._default]
+arguments = ["size"]
+
+[modules.resize.parameters.size]
+name = "newsize"
+type = "length3"
+alt = ["length"]
+
+[modules.translate]
+docs = """
+Translates (moves) its child elements along the specified vector.
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#translate"
+dimensions = 0
+operator = true
+
+[modules.translate.constructors._default]
+arguments = ["value"]
+
+[modules.translate.parameters.value]
+name = "v"
+type = "length3"
+alt = ["length"]
+
+[modules.rotate]
+docs = """
+Rotates a child 'a degrees about the axis around an arbitrary axis.
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#rotate"
+dimensions = 0
+operator = true
+
+[modules.rotate.constructors._default]
+arguments = ["angle"]
+
+[modules.rotate.constructors.rotate_around]
+arguments = ["angle", "value"]
+
+[modules.rotate.parameters.angle]
+name = "a"
+type = "angle3"
+alt = ["angle"]
+
+[modules.rotate.parameters.value]
+name = "v"
+type = "length3"
+alt = ["length"]
+
+[modules.mirror]
+docs = """
+Transforms the child element to a mirror of the original, as if it were the mirror image seen through a plane intersecting the origin.
+
+The argument to mirror() is the normal vector of the origin-intersecting mirror plane used, meaning the vector coming perpendicularly out of the plane. Each coordinate of the original object is altered such that it becomes equidistant on the other side of this plane from the closest point on the plane. For example, mirror([1,0,0]), corresponding to a normal vector pointing in the x-axis direction, produces an object such that all positive x coordinates become negative x coordinates, and all negative x coordinates become positive x coordinates.
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#mirror"
+dimensions = 0
+operator = true
+
+[modules.mirror.constructors._default]
+arguments = ["value"]
+
+[modules.mirror.parameters.value]
+name = "v"
+type = "length3"
+alt = ["length"]
+
+# TODO multmatrix
+# TODO color
+
+[modules.offset]
+docs = """
+Offset generates a new 2d interior or exterior outline from an existing outline. There are two modes of operation: radial and delta.
+
+The radial method creates a new outline as if a circle of some radius is rotated around the exterior (r > 0) or interior (r < 0) of the original outline.
+The delta method creates a new outline with sides having a fixed distance outward (delta > 0) or inward (delta < 0) from the original outline.
+
+The construction methods produce an outline that is either inside or outside of the original outline. For outlines using delta, when the outline goes around a corner, it can be given an optional chamfer.
+
+Offset is useful for making thin walls by subtracting a negative-offset construction from the original, or the original from a positive offset construction.
+
+Offset can be used to simulate some common solid modeling operations:
+
+Fillet: offset(r=-3) offset(delta=+3) rounds all inside (concave) corners, and leaves flat walls unchanged. However, holes less than 2*r in diameter vanish.
+    Round: offset(r=+3) offset(delta=-3) rounds all outside (convex) corners, and leaves flat walls unchanged. However, walls less than 2*r thick vanish.
+"""
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/Transformations#offset"
+dimensions = 0
+operator = true
+
+[modules.offset.constructors._default]
+arguments = ["radius"]
+
+[modules.offset.parameters.radius]
+docs = """
+Specifies the radius of the circle that is rotated about the outline, either inside or outside. This mode produces rounded corners.
+"""
+name = "r"
+type = "length"
+
+[modules.offset.parameters.delta]
+type = "length"
+
+[modules.offset.parameters.chamfer]
+docs = """
+When using the delta parameter, this flag defines if edges should be chamfered (cut off with a straight line) or not (extended to their intersection). This parameter has no effect on radial offsets.
+"""
+type = "bool"

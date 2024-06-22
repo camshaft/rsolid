@@ -1,0 +1,78 @@
+[modules.left]
+docs = """
+Moves children left (in the X- direction) by the given amount.
+"""
+dimensions = 0
+operator = true
+code = """
+translate([-x, 0, 0]) children();
+"""
+
+[modules.left.parameters.x]
+type = "length"
+
+[modules.right]
+docs = """
+Moves children right (in the X+ direction) by the given amount.
+"""
+dimensions = 0
+operator = true
+code = """
+translate([x, 0, 0]) children();
+"""
+
+[modules.right.parameters.x]
+type = "length"
+
+[modules.back]
+docs = """
+Moves children back (in the Y- direction) by the given amount.
+"""
+dimensions = 0
+operator = true
+code = """
+translate([0, -y, 0]) children();
+"""
+
+[modules.back.parameters.y]
+type = "length"
+
+[modules.fwd]
+docs = """
+Moves children forward (in the Y+ direction) by the given amount.
+"""
+dimensions = 0
+operator = true
+code = """
+translate([0, y, 0]) children();
+"""
+
+[modules.fwd.parameters.y]
+type = "length"
+
+[modules.down]
+docs = """
+Moves children down (in the Z- direction) by the given amount.
+"""
+dimensions = 0
+operator = true
+code = """
+translate([0, 0, -z]) children();
+"""
+
+[modules.down.parameters.z]
+type = "length"
+
+[modules.up]
+docs = """
+Moves children up (in the Z+ direction) by the given amount.
+"""
+dimensions = 0
+operator = true
+code = """
+translate([0, 0, z]) children();
+"""
+
+[modules.up.parameters.z]
+type = "length"
+
