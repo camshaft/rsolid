@@ -12,7 +12,7 @@ pub trait Operator<const DIMENSIONS: usize> {
 
 #[derive(Clone, Debug)]
 pub struct Wrapped<const DIMENSIONS_IN: usize, const DIMENSIONS_OUT: usize> {
-    pub parent: Object<DIMENSIONS_IN>,
+    pub parent: Object<DIMENSIONS_OUT>,
     pub child: Object<DIMENSIONS_IN>,
 }
 

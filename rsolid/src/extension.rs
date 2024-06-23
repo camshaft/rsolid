@@ -4,5 +4,7 @@ mod rotate;
 pub use rotate::*;
 mod scale;
 pub use scale::*;
+mod special_vars;
+pub use special_vars::*;
 mod translate;
 pub use translate::*;

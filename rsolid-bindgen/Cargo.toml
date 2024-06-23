@@ -2,6 +2,7 @@
 name = "rsolid-bindgen"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 
 [dependencies]
 heck = "0.5"
