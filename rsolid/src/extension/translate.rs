@@ -52,10 +52,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Back<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Back<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -173,10 +173,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Down<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Down<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -294,10 +294,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Fwd<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Fwd<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -415,10 +415,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Left<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Left<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -536,10 +536,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Right<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Right<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -657,10 +657,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Up<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Up<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }

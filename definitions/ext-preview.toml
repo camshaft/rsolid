@@ -1,0 +1,9 @@
+[modules.in_preview]
+docs = """
+Only renders the subtree in preview mode
+"""
+dimensions = 0
+operator = true
+code = """
+if($preview) { children(); }
+"""

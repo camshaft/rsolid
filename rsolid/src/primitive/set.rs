@@ -36,10 +36,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Difference<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Difference<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -143,10 +143,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Intersection<DIMENSIONS> 
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Intersection<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -248,10 +248,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Union<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Union<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }

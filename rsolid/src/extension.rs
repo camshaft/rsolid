@@ -1,5 +1,7 @@
 mod modifiers;
 pub use modifiers::*;
+mod preview;
+pub use preview::*;
 mod rotate;
 pub use rotate::*;
 mod scale;

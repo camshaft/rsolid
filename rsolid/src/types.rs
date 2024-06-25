@@ -19,9 +19,9 @@ macro_rules! impl_simple {
             }
         }
 
-        impl From<u64> for $name {
+        impl From<i64> for $name {
             #[inline]
-            fn from(value: u64) -> Self {
+            fn from(value: i64) -> Self {
                 Self(value as f64)
             }
         }
@@ -97,9 +97,9 @@ macro_rules! impl_vec {
             }
         }
 
-        impl From<u64> for $name {
+        impl From<i64> for $name {
             #[inline]
-            fn from(value: u64) -> Self {
+            fn from(value: i64) -> Self {
                 Self([value.into(); $count])
             }
         }
@@ -118,9 +118,9 @@ macro_rules! impl_vec {
             }
         }
 
-        impl From<[u64; $count]> for $name {
+        impl From<[i64; $count]> for $name {
             #[inline]
-            fn from(value: [u64; $count]) -> Self {
+            fn from(value: [i64; $count]) -> Self {
                 Self(value.map(|v| v.into()))
             }
         }

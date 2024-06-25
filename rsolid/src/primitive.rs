@@ -1,3 +1,5 @@
+mod extrude;
+pub use extrude::*;
 mod set;
 pub use set::*;
 mod three_d;

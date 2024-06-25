@@ -222,8 +222,8 @@ pub fn generate<O: Write>(options: &Options, defs: &[Definitions], out: &mut O) 
                 w!("impl {dim_gen_constraint} {rsolid}::Operator<{dim_in}> for {upper} {dim_gen_arg} {{");
                 w!("    type Output = {rsolid}::Object<{dim_out}>;");
                 w!();
-                w!("    fn apply(self, child: {rsolid}::Object<{dim_in}>) -> Self::Output {{");
-                w!("        let obj: {rsolid}::operator::Wrapped<{dim_in}, {dim_out}> = {rsolid}::operator::Wrapped {{ parent: self.into(), child }};");
+                w!("    fn apply(self, child: &{rsolid}::Object<{dim_in}>) -> Self::Output {{");
+                w!("        let obj: {rsolid}::operator::Wrapped<{dim_in}, {dim_out}> = {rsolid}::operator::Wrapped {{ parent: self.into(), child: child.clone() }};");
                 w!("        {rsolid}::Object::new(obj)");
                 w!("    }}");
                 w!("}}");

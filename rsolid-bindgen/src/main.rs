@@ -8,8 +8,7 @@ fn main() {
         definitions.push(d);
     }
 
-    let mut options = backend::Options::default();
-    options.main_crate = true;
+    let options = backend::Options { main_crate: true };
     let mut out = std::io::stdout();
     backend::generate(&options, &definitions, &mut out).unwrap();
 }

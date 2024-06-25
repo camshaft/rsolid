@@ -1,93 +1,54 @@
-/// Linear Extrusion is an operation that takes a 2D object as input and generates a 3D object as a result.
-///
-/// Extrusion follows the V vector which defaults to the Z axis, for specifying a custom value a version > 2021.01 is needed.
-///
-/// In OpenSCAD Extrusion is always performed on the projection (shadow) of the 2d object xy plane; so if you rotate or apply other transformations to the 2d object before extrusion, its shadow shape is what is extruded.
-///
-/// Although the extrusion is linear along the V vector, a twist parameter is available that causes the object to be rotated around the V vector as it is extruding upward. This can be used to rotate the object at its center, as if it is a spiral pillar, or produce a helical extrusion around the V vector, like a pig's tail.
-///
-/// A scale parameter is also included so that the object can be expanded or contracted over the extent of the extrusion, allowing extrusions to be flared inward or outward.
+/// Displays the convex hull of child nodes.
 #[derive(Clone, Copy, Default)]
 #[must_use = "Objects must be returned in order to be rendered"]
-pub struct LinearExtrude {
-    height: Option<crate::types::Length>,
-    vector: Option<crate::types::Length3>,
-}
+pub struct Hull<const DIMENSIONS: usize> {}
 
+/// Displays the convex hull of child nodes.
 #[inline]
-pub fn linear_extrude(height: impl Into<crate::types::Length>) -> LinearExtrude {
-    LinearExtrude::default().height(height)
+pub fn hull<const DIMENSIONS: usize>() -> Hull<DIMENSIONS> {
+    Hull::default()
 }
 
-impl LinearExtrude {
-    #[inline]
-    pub fn height<T: Into<crate::types::Length>>(mut self, height: T) -> Self {
-        self.height = Some(height.into());
-        self
-    }
+impl<const DIMENSIONS: usize> Hull<DIMENSIONS> {}
 
-    #[inline]
-    pub fn vector<T: Into<crate::types::Length3>>(mut self, vector: T) -> Self {
-        self.vector = Some(vector.into());
-        self
-    }
-}
-
-impl ::core::fmt::Debug for LinearExtrude {
+impl<const DIMENSIONS: usize> ::core::fmt::Debug for Hull<DIMENSIONS> {
     #[allow(clippy::write_literal)]
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-        let mut s = f.debug_struct("linear_extrude");
-        if let Some(value) = self.height.as_ref() {
-            s.field("height", value);
-        }
-        if let Some(value) = self.vector.as_ref() {
-            s.field("v", value);
-        }
+        let mut s = f.debug_struct("hull");
         s.finish()
     }
 }
 
-impl crate::scad::Scad for LinearExtrude {
+impl<const DIMENSIONS: usize> crate::scad::Scad for Hull<DIMENSIONS> {
     fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
-        let name = "linear_extrude";
-        let args = [
-            (
-                "height",
-                self.height
-                    .as_ref()
-                    .map(|value| crate::scad::Scad::assign(value, f)),
-            ),
-            (
-                "v",
-                self.vector
-                    .as_ref()
-                    .map(|value| crate::scad::Scad::assign(value, f)),
-            ),
-        ];
+        let name = "hull";
+        let args = [];
         f.call(name, args, true)
     }
 }
 
-impl ::core::fmt::Display for LinearExtrude {
+impl<const DIMENSIONS: usize> ::core::fmt::Display for Hull<DIMENSIONS> {
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
         f.write_str(&crate::scad::Scad::to_scad(self))
     }
 }
 
-impl crate::Operator<2> for LinearExtrude {
-    type Output = crate::Object<3>;
+impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Hull<DIMENSIONS> {
+    type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<2>) -> Self::Output {
-        let obj: crate::operator::Wrapped<2, 3> = crate::operator::Wrapped {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
+        let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
 }
 
-impl<T: crate::IntoObject<3>> ::core::ops::Add<T> for LinearExtrude {
-    type Output = crate::Object<3>;
+impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add<T>
+    for Hull<DIMENSIONS>
+{
+    type Output = crate::Object<DIMENSIONS>;
 
     fn add(self, other: T) -> Self::Output {
         use crate::IntoObject as _;
@@ -95,8 +56,10 @@ impl<T: crate::IntoObject<3>> ::core::ops::Add<T> for LinearExtrude {
     }
 }
 
-impl<T: crate::IntoObject<3>> ::core::ops::Sub<T> for LinearExtrude {
-    type Output = crate::Object<3>;
+impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub<T>
+    for Hull<DIMENSIONS>
+{
+    type Output = crate::Object<DIMENSIONS>;
 
     fn sub(self, other: T) -> Self::Output {
         use crate::IntoObject as _;
@@ -104,8 +67,10 @@ impl<T: crate::IntoObject<3>> ::core::ops::Sub<T> for LinearExtrude {
     }
 }
 
-impl<T: crate::IntoObject<3>> ::core::ops::BitOr<T> for LinearExtrude {
-    type Output = crate::Object<3>;
+impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::BitOr<T>
+    for Hull<DIMENSIONS>
+{
+    type Output = crate::Object<DIMENSIONS>;
 
     fn bitor(self, other: T) -> Self::Output {
         use crate::IntoObject as _;
@@ -113,7 +78,9 @@ impl<T: crate::IntoObject<3>> ::core::ops::BitOr<T> for LinearExtrude {
     }
 }
 
-impl<F: crate::Operator<3>> ::core::ops::Shr<F> for LinearExtrude {
+impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F>
+    for Hull<DIMENSIONS>
+{
     type Output = F::Output;
 
     fn shr(self, f: F) -> Self::Output {
@@ -122,16 +89,121 @@ impl<F: crate::Operator<3>> ::core::ops::Shr<F> for LinearExtrude {
     }
 }
 
-impl From<LinearExtrude> for crate::Object<3> {
+impl<const DIMENSIONS: usize> From<Hull<DIMENSIONS>> for crate::Object<DIMENSIONS> {
     #[inline]
-    fn from(value: LinearExtrude) -> Self {
+    fn from(value: Hull<DIMENSIONS>) -> Self {
         crate::Object::new(value)
     }
 }
 
-impl crate::IntoObject<3> for LinearExtrude {
+impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for Hull<DIMENSIONS> {
     #[inline]
-    fn into_object(self) -> crate::Object<3> {
+    fn into_object(self) -> crate::Object<DIMENSIONS> {
+        crate::Object::new(self)
+    }
+}
+
+/// Displays the minkowski sum of child nodes.
+#[derive(Clone, Copy, Default)]
+#[must_use = "Objects must be returned in order to be rendered"]
+pub struct Minkowski<const DIMENSIONS: usize> {}
+
+/// Displays the minkowski sum of child nodes.
+#[inline]
+pub fn minkowski<const DIMENSIONS: usize>() -> Minkowski<DIMENSIONS> {
+    Minkowski::default()
+}
+
+impl<const DIMENSIONS: usize> Minkowski<DIMENSIONS> {}
+
+impl<const DIMENSIONS: usize> ::core::fmt::Debug for Minkowski<DIMENSIONS> {
+    #[allow(clippy::write_literal)]
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        let mut s = f.debug_struct("minkowski");
+        s.finish()
+    }
+}
+
+impl<const DIMENSIONS: usize> crate::scad::Scad for Minkowski<DIMENSIONS> {
+    fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
+        let name = "minkowski";
+        let args = [];
+        f.call(name, args, true)
+    }
+}
+
+impl<const DIMENSIONS: usize> ::core::fmt::Display for Minkowski<DIMENSIONS> {
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        f.write_str(&crate::scad::Scad::to_scad(self))
+    }
+}
+
+impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Minkowski<DIMENSIONS> {
+    type Output = crate::Object<DIMENSIONS>;
+
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
+        let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
+            parent: self.into(),
+            child: child.clone(),
+        };
+        crate::Object::new(obj)
+    }
+}
+
+impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add<T>
+    for Minkowski<DIMENSIONS>
+{
+    type Output = crate::Object<DIMENSIONS>;
+
+    fn add(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().add(other.into_object())
+    }
+}
+
+impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub<T>
+    for Minkowski<DIMENSIONS>
+{
+    type Output = crate::Object<DIMENSIONS>;
+
+    fn sub(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().sub(other.into_object())
+    }
+}
+
+impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::BitOr<T>
+    for Minkowski<DIMENSIONS>
+{
+    type Output = crate::Object<DIMENSIONS>;
+
+    fn bitor(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().bitor(other.into_object())
+    }
+}
+
+impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F>
+    for Minkowski<DIMENSIONS>
+{
+    type Output = F::Output;
+
+    fn shr(self, f: F) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object() >> f
+    }
+}
+
+impl<const DIMENSIONS: usize> From<Minkowski<DIMENSIONS>> for crate::Object<DIMENSIONS> {
+    #[inline]
+    fn from(value: Minkowski<DIMENSIONS>) -> Self {
+        crate::Object::new(value)
+    }
+}
+
+impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for Minkowski<DIMENSIONS> {
+    #[inline]
+    fn into_object(self) -> crate::Object<DIMENSIONS> {
         crate::Object::new(self)
     }
 }
@@ -193,10 +265,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Mirror<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Mirror<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -363,10 +435,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Offset<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Offset<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -487,10 +559,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Resize<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Resize<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -635,10 +707,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Rotate<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Rotate<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -757,10 +829,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Scale<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Scale<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }
@@ -879,10 +951,10 @@ impl<const DIMENSIONS: usize> ::core::fmt::Display for Translate<DIMENSIONS> {
 impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Translate<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
-    fn apply(self, child: crate::Object<DIMENSIONS>) -> Self::Output {
+    fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
         let obj: crate::operator::Wrapped<DIMENSIONS, DIMENSIONS> = crate::operator::Wrapped {
             parent: self.into(),
-            child,
+            child: child.clone(),
         };
         crate::Object::new(obj)
     }

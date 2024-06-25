@@ -1,0 +1,9 @@
+function _v0() = 3;
+function _v1() = 46.18802153517006;
+module _v2() { circle($fn=_v0(), r=_v1()); }
+module _v3 (a=0) { rotate([0, 0, a]) children(); }
+function _v4() = -30;
+module _v5() { _v3(a=_v4()) children(); }
+module _v6() { _v5() _v2(); }
+
+_v6();

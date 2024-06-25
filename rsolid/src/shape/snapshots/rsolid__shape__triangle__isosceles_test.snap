@@ -1,0 +1,17 @@
+---
+source: rsolid/src/shape/triangle.rs
+expression: "isosceles(100.0, 200.0)"
+---
+function _v0() = 3;
+function _v1() = 57.735026918962575;
+module _v2() { circle($fn=_v0(), r=_v1()); }
+module _v3 (a=0) { rotate([0, 0, a]) children(); }
+function _v4() = -30;
+module _v5() { _v3(a=_v4()) children(); }
+module _v6() { _v5() _v2(); }
+module _v7 (y=undef) { translate([0, y, 0]) children(); }
+function _v8() = -56.69872981077807;
+module _v9() { _v7(y=_v8()) children(); }
+module _v10() { _v9() _v6(); }
+
+_v10();

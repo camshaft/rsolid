@@ -24,6 +24,12 @@ pub trait ObjectExt<const DIMENSIONS: usize>: IntoObject<DIMENSIONS> + Sized {
     }
 
     #[inline]
+    fn minkowski<B: IntoObject<DIMENSIONS>>(self, b: B) -> Object<DIMENSIONS> {
+        crate::block::Block(self.into_object(), b.into_object()).into_object()
+            >> primitives::minkowski()
+    }
+
+    #[inline]
     fn up<Z: Into<Length>>(self, z: Z) -> Object<DIMENSIONS> {
         self.into_object() >> extensions::up(z)
     }

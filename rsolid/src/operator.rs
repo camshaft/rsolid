@@ -7,7 +7,7 @@ use core::fmt;
 pub trait Operator<const DIMENSIONS: usize> {
     type Output;
 
-    fn apply(self, object: Object<DIMENSIONS>) -> Self::Output;
+    fn apply(self, object: &Object<DIMENSIONS>) -> Self::Output;
 }
 
 #[derive(Clone, Debug)]

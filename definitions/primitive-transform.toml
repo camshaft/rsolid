@@ -132,31 +132,17 @@ When using the delta parameter, this flag defines if edges should be chamfered (
 """
 type = "bool"
 
-[modules.linear_extrude]
+[modules.minkowski]
 docs = """
-Linear Extrusion is an operation that takes a 2D object as input and generates a 3D object as a result.
-
-Extrusion follows the V vector which defaults to the Z axis, for specifying a custom value a version > 2021.01 is needed.
-
-In OpenSCAD Extrusion is always performed on the projection (shadow) of the 2d object xy plane; so if you rotate or apply other transformations to the 2d object before extrusion, its shadow shape is what is extruded.
-
-Although the extrusion is linear along the V vector, a twist parameter is available that causes the object to be rotated around the V vector as it is extruding upward. This can be used to rotate the object at its center, as if it is a spiral pillar, or produce a helical extrusion around the V vector, like a pig's tail.
-
-A scale parameter is also included so that the object can be expanded or contracted over the extent of the extrusion, allowing extrusions to be flared inward or outward.
+Displays the minkowski sum of child nodes.
 """
-dimensions = 3
-dimensions_in = 2
+dimensions = 0
 operator = true
 
-[modules.linear_extrude.constructors._default]
-arguments = ["height"]
+[modules.hull]
+docs = """
+Displays the convex hull of child nodes.
+"""
+dimensions = 0
+operator = true
 
-# TODO add the rest of the parameters
-
-[modules.linear_extrude.parameters.height]
-type = "length"
-
-[modules.linear_extrude.parameters.vector]
-name = "v"
-type = "length3"
-alt = ["length"]

@@ -65,6 +65,14 @@ impl<const DIMENSIONS: usize, F: Operator<DIMENSIONS>> ops::Shr<F> for Object<DI
     type Output = F::Output;
 
     fn shr(self, f: F) -> Self::Output {
+        f.apply(&self)
+    }
+}
+
+impl<const DIMENSIONS: usize, F: Operator<DIMENSIONS>> ops::Shr<F> for &Object<DIMENSIONS> {
+    type Output = F::Output;
+
+    fn shr(self, f: F) -> Self::Output {
         f.apply(self)
     }
 }
