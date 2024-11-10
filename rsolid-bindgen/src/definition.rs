@@ -45,6 +45,8 @@ pub struct Module {
     pub parameters: BTreeMap<String, Parameter>,
     #[serde(default)]
     pub constructors: BTreeMap<String, Constructor>,
+    #[serde(default)]
+    pub imports: Vec<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -76,15 +78,17 @@ pub enum Type {
     Angle2,
     Angle3,
     FragmentResolution,
+    String,
 }
 
-#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(untagged)]
 pub enum Value {
     Boolean(bool),
     Float(f64),
     Float2([f64; 2]),
     Float3([f64; 3]),
+    String(String),
 }
 
 impl fmt::Display for Value {
@@ -94,6 +98,7 @@ impl fmt::Display for Value {
             Value::Float(v) => v.fmt(f),
             Value::Float2([a, b]) => write!(f, "[{a}, {b}]"),
             Value::Float3([a, b, c]) => write!(f, "[{a}, {b}, {c}]"),
+            Value::String(v) => write!(f, "{v:?}"),
         }
     }
 }

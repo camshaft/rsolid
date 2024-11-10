@@ -214,20 +214,20 @@ impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for Minkowski<DIMENS
 #[derive(Clone, Copy, Default)]
 #[must_use = "Objects must be returned in order to be rendered"]
 pub struct Mirror<const DIMENSIONS: usize> {
-    value: Option<crate::types::Length3>,
+    vector: Option<crate::types::Length3>,
 }
 
 #[inline]
 pub fn mirror<const DIMENSIONS: usize>(
-    value: impl Into<crate::types::Length3>,
+    vector: impl Into<crate::types::Length3>,
 ) -> Mirror<DIMENSIONS> {
-    Mirror::default().value(value)
+    Mirror::default().vector(vector)
 }
 
 impl<const DIMENSIONS: usize> Mirror<DIMENSIONS> {
     #[inline]
-    pub fn value<T: Into<crate::types::Length3>>(mut self, value: T) -> Self {
-        self.value = Some(value.into());
+    pub fn vector<T: Into<crate::types::Length3>>(mut self, vector: T) -> Self {
+        self.vector = Some(vector.into());
         self
     }
 }
@@ -236,7 +236,7 @@ impl<const DIMENSIONS: usize> ::core::fmt::Debug for Mirror<DIMENSIONS> {
     #[allow(clippy::write_literal)]
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
         let mut s = f.debug_struct("mirror");
-        if let Some(value) = self.value.as_ref() {
+        if let Some(value) = self.vector.as_ref() {
             s.field("v", value);
         }
         s.finish()
@@ -248,7 +248,7 @@ impl<const DIMENSIONS: usize> crate::scad::Scad for Mirror<DIMENSIONS> {
         let name = "mirror";
         let args = [(
             "v",
-            self.value
+            self.vector
                 .as_ref()
                 .map(|value| crate::scad::Scad::assign(value, f)),
         )];

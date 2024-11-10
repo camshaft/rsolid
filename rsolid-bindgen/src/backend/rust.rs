@@ -20,6 +20,7 @@ impl Options {
     fn translate_type(&self, ty: Type) -> String {
         let ty = match ty {
             Type::Bool => return "bool".into(),
+            Type::String => return "String".into(),
             Type::Length => "Length",
             Type::Length2 => "Length2",
             Type::Length3 => "Length3",
@@ -58,10 +59,17 @@ pub fn generate<O: Write>(options: &Options, defs: &[Definitions], out: &mut O) 
                 ("", "", "")
             };
 
+            let is_copy = m.parameters.values().all(|p| !matches!(p.ty, Type::String));
+
             for line in m.docs.lines() {
                 w!("/// {line}");
             }
-            w!("{}", "#[derive(Clone, Copy, Default)]");
+
+            if is_copy {
+                w!("{}", "#[derive(Clone, Copy, Default)]");
+            } else {
+                w!("{}", "#[derive(Clone, Default)]");
+            }
             w!("#[must_use = \"Objects must be returned in order to be rendered\"]");
             w!("pub struct {upper} {dim_gen_constraint} {{");
             for (p_name, param) in m.parameters.iter() {
@@ -166,6 +174,17 @@ pub fn generate<O: Write>(options: &Options, defs: &[Definitions], out: &mut O) 
 
             w!("impl{dim_gen_constraint} {rsolid}::scad::Scad for {upper}{dim_gen_arg} {{");
             w!("    fn assign(&self, f: &mut {rsolid}::scad::Formatter) -> {rsolid}::scad::Assignment {{");
+
+            for inc in &m.imports {
+                if let Some(inc) = inc.strip_prefix("use ") {
+                    w!("        f.uses({inc:?});");
+                } else if let Some(inc) = inc.strip_prefix("include ") {
+                    w!("        f.includes({inc:?});");
+                } else {
+                    w!("        f.uses({inc:?});");
+                }
+            }
+
             if let Some(code) = m.code.as_ref() {
                 let mut out = "(".to_string();
 

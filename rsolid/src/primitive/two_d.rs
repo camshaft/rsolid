@@ -276,3 +276,174 @@ impl crate::IntoObject<2> for Square {
         crate::Object::new(self)
     }
 }
+
+///
+#[derive(Clone, Default)]
+#[must_use = "Objects must be returned in order to be rendered"]
+pub struct Text {
+    font: Option<String>,
+    halign: Option<String>,
+    size: Option<crate::types::Scalar>,
+    text: Option<String>,
+    valign: Option<String>,
+}
+
+#[inline]
+pub fn text(text: impl Into<String>) -> Text {
+    Text::default().text(text)
+}
+
+impl Text {
+    /// The name of the font that should be used. This is not the name of the font file, but the logical font name (internally handled by the fontconfig library). This can also include a style parameter, see below. A list of installed fonts & styles can be obtained using the font list dialog (Help -> Font List).
+    #[inline]
+    pub fn font<T: Into<String>>(mut self, font: T) -> Self {
+        self.font = Some(font.into());
+        self
+    }
+
+    /// The horizontal alignment for the text. Possible values are "left", "center" and "right". Default is "left".
+    #[inline]
+    pub fn halign<T: Into<String>>(mut self, halign: T) -> Self {
+        self.halign = Some(halign.into());
+        self
+    }
+
+    /// The generated text has an ascent (height above the baseline) of approximately the given value. Default is 10. Different fonts can vary somewhat and may not fill the size specified exactly, typically they render slightly smaller. On a metric system a size of 25.4 (1" imperial) will correspond to 100pt ⇒ a 12pt font size would be 12×0.254 for metric conversion or 0.12 in imperial.
+    #[inline]
+    pub fn size<T: Into<crate::types::Scalar>>(mut self, size: T) -> Self {
+        self.size = Some(size.into());
+        self
+    }
+
+    /// The text to generate.
+    #[inline]
+    pub fn text<T: Into<String>>(mut self, text: T) -> Self {
+        self.text = Some(text.into());
+        self
+    }
+
+    /// The vertical alignment for the text. Possible values are "top", "center", "baseline" and "bottom". Default is "baseline".
+    #[inline]
+    pub fn valign<T: Into<String>>(mut self, valign: T) -> Self {
+        self.valign = Some(valign.into());
+        self
+    }
+}
+
+impl ::core::fmt::Debug for Text {
+    #[allow(clippy::write_literal)]
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        let mut s = f.debug_struct("text");
+        if let Some(value) = self.font.as_ref() {
+            s.field("font", value);
+        }
+        if let Some(value) = self.halign.as_ref() {
+            s.field("halign", value);
+        }
+        if let Some(value) = self.size.as_ref() {
+            s.field("size", value);
+        }
+        if let Some(value) = self.text.as_ref() {
+            s.field("text", value);
+        }
+        if let Some(value) = self.valign.as_ref() {
+            s.field("valign", value);
+        }
+        s.finish()
+    }
+}
+
+impl crate::scad::Scad for Text {
+    fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
+        let name = "text";
+        let args = [
+            (
+                "font",
+                self.font
+                    .as_ref()
+                    .map(|value| crate::scad::Scad::assign(value, f)),
+            ),
+            (
+                "halign",
+                self.halign
+                    .as_ref()
+                    .map(|value| crate::scad::Scad::assign(value, f)),
+            ),
+            (
+                "size",
+                self.size
+                    .as_ref()
+                    .map(|value| crate::scad::Scad::assign(value, f)),
+            ),
+            (
+                "text",
+                self.text
+                    .as_ref()
+                    .map(|value| crate::scad::Scad::assign(value, f)),
+            ),
+            (
+                "valign",
+                self.valign
+                    .as_ref()
+                    .map(|value| crate::scad::Scad::assign(value, f)),
+            ),
+        ];
+        f.call(name, args, false)
+    }
+}
+
+impl ::core::fmt::Display for Text {
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        f.write_str(&crate::scad::Scad::to_scad(self))
+    }
+}
+
+impl<T: crate::IntoObject<2>> ::core::ops::Add<T> for Text {
+    type Output = crate::Object<2>;
+
+    fn add(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().add(other.into_object())
+    }
+}
+
+impl<T: crate::IntoObject<2>> ::core::ops::Sub<T> for Text {
+    type Output = crate::Object<2>;
+
+    fn sub(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().sub(other.into_object())
+    }
+}
+
+impl<T: crate::IntoObject<2>> ::core::ops::BitOr<T> for Text {
+    type Output = crate::Object<2>;
+
+    fn bitor(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().bitor(other.into_object())
+    }
+}
+
+impl<F: crate::Operator<2>> ::core::ops::Shr<F> for Text {
+    type Output = F::Output;
+
+    fn shr(self, f: F) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object() >> f
+    }
+}
+
+impl From<Text> for crate::Object<2> {
+    #[inline]
+    fn from(value: Text) -> Self {
+        crate::Object::new(value)
+    }
+}
+
+impl crate::IntoObject<2> for Text {
+    #[inline]
+    fn into_object(self) -> crate::Object<2> {
+        crate::Object::new(self)
+    }
+}

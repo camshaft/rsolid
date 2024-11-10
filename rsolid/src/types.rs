@@ -7,6 +7,12 @@ impl Scad for bool {
     }
 }
 
+impl Scad for String {
+    fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
+        f.value(format_args!("{self:?}"))
+    }
+}
+
 macro_rules! impl_simple {
     ($name:ident) => {
         #[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]

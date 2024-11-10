@@ -1,5 +1,5 @@
 use core::fmt;
-use std::collections::{BTreeMap, HashMap};
+use std::collections::{BTreeMap, HashMap, HashSet};
 
 pub trait Scad {
     fn assign(&self, f: &mut Formatter) -> Assignment;
@@ -26,8 +26,11 @@ pub struct Formatter {
 
 impl fmt::Display for Formatter {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let mut seen_imports = HashSet::new();
         for i in &self.imports {
-            writeln!(f, "{}", i)?;
+            if seen_imports.insert(i) {
+                writeln!(f, "{}", i)?;
+            }
         }
 
         let mut a: Vec<_> = self
@@ -82,6 +85,14 @@ impl Formatter {
 
     pub fn module<V: fmt::Display>(&mut self, v: V) -> Assignment {
         self.emit(v, AssignmentType::Module)
+    }
+
+    pub fn uses<V: fmt::Display>(&mut self, v: V) {
+        self.imports.push(Import::Use(v.to_string()))
+    }
+
+    pub fn includes<V: fmt::Display>(&mut self, v: V) {
+        self.imports.push(Import::Include(v.to_string()))
     }
 
     pub fn call<'a, N: fmt::Display, A: IntoIterator<Item = (&'a str, Option<Assignment>)>>(
@@ -153,7 +164,7 @@ impl Scad for Assignment {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
 #[allow(dead_code)]
 enum Import {
     Use(String),
@@ -163,8 +174,8 @@ enum Import {
 impl fmt::Display for Import {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Import::Use(path) => write!(f, "use <{path}>;"),
-            Import::Include(path) => write!(f, "include <{path}>;"),
+            Import::Use(path) => write!(f, "use {path};"),
+            Import::Include(path) => write!(f, "include {path};"),
         }
     }
 }

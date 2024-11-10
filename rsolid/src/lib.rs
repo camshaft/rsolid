@@ -3,6 +3,7 @@
 mod testing;
 
 mod block;
+pub mod bosl;
 mod ext;
 mod extension;
 mod helpers;
@@ -28,13 +29,12 @@ pub use primitive::*;
 pub use shape::*;
 pub use types::*;
 
-pub fn export<V: scad::Scad>(v: &V, crate_name: &str, renders: &[&str]) {
+pub fn export<V: scad::Scad>(v: &V, path: &std::path::Path, renders: &[&str]) {
     let out = v.to_scad();
 
-    let dir = std::path::Path::new("target/rsolid");
-    std::fs::create_dir_all(dir).unwrap();
+    let stem = std::path::Path::new("target/rsolid").join(path);
+    std::fs::create_dir_all(stem.parent().unwrap()).unwrap();
 
-    let stem = dir.join(crate_name);
     let scad = stem.with_extension("scad");
     eprintln!("rendering {}...", scad.display());
     std::fs::write(&scad, out).unwrap();
@@ -73,12 +73,13 @@ macro_rules! export {
         $crate::export!($value, &[]);
     };
     ($value:expr, $extra:expr) => {{
-        let name = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-            .file_stem()
-            .unwrap()
-            .to_str()
-            .unwrap();
-
-        $crate::export(&$value, name, $extra);
+        let path = std::path::Path::new(concat!(env!("CARGO_PKG_NAME"), ".scad"));
+        $crate::export(&$value, path, $extra);
+    }};
+    ($value:expr, $name:expr, $extra:expr) => {{
+        let path = std::path::Path::new(env!("CARGO_PKG_NAME"))
+            .join($name)
+            .with_extension("scad");
+        $crate::export(&$value, &path, $extra);
     }};
 }

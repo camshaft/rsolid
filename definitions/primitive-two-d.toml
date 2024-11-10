@@ -68,3 +68,47 @@ Fragment resolution
 """
 type = "fragment_resolution"
 default = 0.0
+
+[modules.text]
+docs = """
+
+"""
+dimensions = 2
+
+[modules.text.constructors._default]
+arguments = ["text"]
+
+[modules.text.parameters.text]
+docs = """
+The text to generate.
+"""
+type = "string"
+
+[modules.text.parameters.size]
+docs = """
+The generated text has an ascent (height above the baseline) of approximately the given value. Default is 10. Different fonts can vary somewhat and may not fill the size specified exactly, typically they render slightly smaller. On a metric system a size of 25.4 (1" imperial) will correspond to 100pt ⇒ a 12pt font size would be 12×0.254 for metric conversion or 0.12 in imperial.
+"""
+type = "scalar"
+default = 10
+
+[modules.text.parameters.font]
+docs = """
+The name of the font that should be used. This is not the name of the font file, but the logical font name (internally handled by the fontconfig library). This can also include a style parameter, see below. A list of installed fonts & styles can be obtained using the font list dialog (Help -> Font List).
+"""
+type = "string"
+
+[modules.text.parameters.halign]
+docs = """
+The horizontal alignment for the text. Possible values are "left", "center" and "right". Default is "left".
+"""
+type = "string"
+default = "left"
+# TODO add support for enums
+
+[modules.text.parameters.valign]
+docs = """
+The vertical alignment for the text. Possible values are "top", "center", "baseline" and "bottom". Default is "baseline".
+"""
+type = "string"
+default = "left"
+# TODO add support for enums

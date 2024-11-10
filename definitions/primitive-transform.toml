@@ -83,9 +83,9 @@ dimensions = 0
 operator = true
 
 [modules.mirror.constructors._default]
-arguments = ["value"]
+arguments = ["vector"]
 
-[modules.mirror.parameters.value]
+[modules.mirror.parameters.vector]
 name = "v"
 type = "length3"
 alt = ["length"]

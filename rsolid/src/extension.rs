@@ -1,3 +1,5 @@
+mod mirror;
+pub use mirror::*;
 mod modifiers;
 pub use modifiers::*;
 mod preview;

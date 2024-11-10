@@ -12,9 +12,11 @@ fn main() -> Result {
 
     sh.create_dir("rsolid/src/primitive/")?;
     sh.create_dir("rsolid/src/extension/")?;
+    sh.create_dir("rsolid/src/bosl/")?;
 
     let mut primitives = vec![];
     let mut extensions = vec![];
+    let mut bosl = vec![];
 
     for file in sh.read_dir("definitions")? {
         let bindings = cmd!(sh, "cargo run --bin rsolid-bindgen -- {file}").read()?;
@@ -29,8 +31,12 @@ fn main() -> Result {
             let name = name.replace('-', "_");
             extensions.push(name.clone());
             ("extension", name)
+        } else if let Some(name) = stem.strip_prefix("bosl-") {
+            let name = name.replace('-', "_");
+            bosl.push(name.clone());
+            ("bosl", name)
         } else {
-            todo!()
+            unimplemented!("definition not yet handled: {stem:?}")
         };
 
         let out = Path::new("rsolid/src/")
@@ -41,10 +47,18 @@ fn main() -> Result {
         sh.write_file(out, bindings)?;
     }
 
-    for (mods, name) in [(primitives, "primitive"), (extensions, "extension")] {
+    for (mods, name, flatten) in [
+        (primitives, "primitive", true),
+        (extensions, "extension", true),
+        (bosl, "bosl", false),
+    ] {
         let mut out = String::new();
         for m in mods {
-            out += &format!("mod {m};\npub use {m}::*;\n");
+            if flatten {
+                out += &format!("mod {m};\npub use {m}::*;\n");
+            } else {
+                out += &format!("pub mod {m};\n\n");
+            }
         }
         sh.write_file(Path::new("rsolid/src").join(name).with_extension("rs"), out)?;
     }

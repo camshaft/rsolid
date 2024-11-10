@@ -1,0 +1,55 @@
+# Screw
+[modules.screw]
+docs = """
+Makes a very simple screw model, useful for making screwholes.
+"""
+dimensions = 3
+imports = [
+  "include <BOSL/constants.scad>",
+  "use <BOSL/metric_screws.scad>",
+]
+
+[modules.screw.parameters.size]
+name = "screwsize"
+docs = """
+diameter of threaded part of screw.
+"""
+type = "length"
+default = 3.0
+
+[modules.screw.parameters.len]
+name = "screwlen"
+docs = """
+length of threaded part of screw.
+"""
+type = "length"
+default = 10.0
+
+[modules.screw.parameters.head_size]
+name = "headsize"
+docs = """
+diameter of the screw head.
+"""
+type = "length"
+default = 6.0
+
+[modules.screw.parameters.head_len]
+name = "headlen"
+docs = """
+length of the screw head.
+"""
+type = "length"
+default = 3.0
+
+[modules.screw.parameters.pitch]
+docs = """
+"""
+type = "scalar"
+
+[modules.screw.parameters.countersunk]
+docs = """
+If true, center from cap's top instead of it's bottom.
+"""
+type = "bool"
+default = false
+
