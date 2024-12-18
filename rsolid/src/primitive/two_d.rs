@@ -155,6 +155,153 @@ impl crate::IntoObject<2> for Circle {
     }
 }
 
+/// The function polygon() creates a multiple sided shape from a list of x,y coordinates. A polygon is the most powerful 2D object. It can create anything that circle and squares can, as well as much more. This includes irregular shapes with both concave and convex edges. In addition it can place holes within that shape.
+#[derive(Clone, Default)]
+#[must_use = "Objects must be returned in order to be rendered"]
+pub struct Polygon {
+    convexity: Option<crate::types::Scalar>,
+    paths: Option<crate::types::VecLength2>,
+    points: Option<crate::types::VecLength2>,
+}
+
+#[inline]
+pub fn polygon(points: impl Into<crate::types::VecLength2>) -> Polygon {
+    Polygon::default().points(points)
+}
+
+impl Polygon {
+    /// Integer number of "inward" curves, ie. expected path crossings of an arbitrary line through the polygon
+    #[inline]
+    pub fn convexity<T: Into<crate::types::Scalar>>(mut self, convexity: T) -> Self {
+        self.convexity = Some(convexity.into());
+        self
+    }
+
+    /// A closed shape is created by returning from the last point specified to the first.
+    ///
+    /// ### Default
+    /// If no path is specified, all points are used in the order listed.
+    ///
+    /// ### Single Vector
+    /// The order to traverse the points. Uses indices from 0 to n-1. May be in a different order and use all or part, of the points listed.
+    ///
+    /// ### Multiple Vectors
+    /// Creates primary and secondary shapes. Secondary shapes are subtracted from the primary shape (like difference()). Secondary shapes may be wholly or partially within the primary shape.
+    #[inline]
+    pub fn paths<T: Into<crate::types::VecLength2>>(mut self, paths: T) -> Self {
+        self.paths = Some(paths.into());
+        self
+    }
+
+    /// The list of x,y points of the polygon. : A vector of 2 element vectors.
+    /// Note: points are indexed from 0 to n-1.
+    #[inline]
+    pub fn points<T: Into<crate::types::VecLength2>>(mut self, points: T) -> Self {
+        self.points = Some(points.into());
+        self
+    }
+}
+
+impl ::core::fmt::Debug for Polygon {
+    #[allow(clippy::write_literal)]
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        let mut s = f.debug_struct("polygon");
+        if let Some(value) = self.convexity.as_ref() {
+            s.field("convexity", value);
+        }
+        if let Some(value) = self.paths.as_ref() {
+            s.field("paths", value);
+        }
+        if let Some(value) = self.points.as_ref() {
+            s.field("points", value);
+        }
+        s.finish()
+    }
+}
+
+impl crate::scad::Scad for Polygon {
+    fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
+        let name = "polygon";
+        let args = [
+            (
+                "convexity",
+                self.convexity
+                    .as_ref()
+                    .map(|value| crate::scad::Scad::assign(value, f)),
+            ),
+            (
+                "paths",
+                self.paths
+                    .as_ref()
+                    .map(|value| crate::scad::Scad::assign(value, f)),
+            ),
+            (
+                "points",
+                self.points
+                    .as_ref()
+                    .map(|value| crate::scad::Scad::assign(value, f)),
+            ),
+        ];
+        f.call(name, args, false)
+    }
+}
+
+impl ::core::fmt::Display for Polygon {
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        f.write_str(&crate::scad::Scad::to_scad(self))
+    }
+}
+
+impl<T: crate::IntoObject<2>> ::core::ops::Add<T> for Polygon {
+    type Output = crate::Object<2>;
+
+    fn add(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().add(other.into_object())
+    }
+}
+
+impl<T: crate::IntoObject<2>> ::core::ops::Sub<T> for Polygon {
+    type Output = crate::Object<2>;
+
+    fn sub(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().sub(other.into_object())
+    }
+}
+
+impl<T: crate::IntoObject<2>> ::core::ops::BitOr<T> for Polygon {
+    type Output = crate::Object<2>;
+
+    fn bitor(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().bitor(other.into_object())
+    }
+}
+
+impl<F: crate::Operator<2>> ::core::ops::Shr<F> for Polygon {
+    type Output = F::Output;
+
+    fn shr(self, f: F) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object() >> f
+    }
+}
+
+impl From<Polygon> for crate::Object<2> {
+    #[inline]
+    fn from(value: Polygon) -> Self {
+        crate::Object::new(value)
+    }
+}
+
+impl crate::IntoObject<2> for Polygon {
+    #[inline]
+    fn into_object(self) -> crate::Object<2> {
+        crate::Object::new(self)
+    }
+}
+
 /// Creates a square or rectangle in the first quadrant.
 #[derive(Clone, Copy, Default)]
 #[must_use = "Objects must be returned in order to be rendered"]

@@ -79,6 +79,14 @@ pub enum Type {
     Angle3,
     FragmentResolution,
     String,
+    VecLength2,
+    VecLength3,
+}
+
+impl Type {
+    pub fn is_copy(&self) -> bool {
+        !matches!(self, Self::String | Self::VecLength2 | Self::VecLength3)
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -89,6 +97,8 @@ pub enum Value {
     Float2([f64; 2]),
     Float3([f64; 3]),
     String(String),
+    Vec2(Vec<[f64; 2]>),
+    Vec3(Vec<[f64; 3]>),
 }
 
 impl fmt::Display for Value {
@@ -99,6 +109,8 @@ impl fmt::Display for Value {
             Value::Float2([a, b]) => write!(f, "[{a}, {b}]"),
             Value::Float3([a, b, c]) => write!(f, "[{a}, {b}, {c}]"),
             Value::String(v) => write!(f, "{v:?}"),
+            Value::Vec2(v) => f.debug_list().entries(v.iter()).finish(),
+            Value::Vec3(v) => f.debug_list().entries(v.iter()).finish(),
         }
     }
 }

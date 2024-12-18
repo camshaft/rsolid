@@ -29,6 +29,15 @@ macro_rules! import {
         pub fn $name<P: core::fmt::Display>(path: P) -> Object<$dim> {
             Import(path.to_string()).into_object()
         }
+
+        #[macro_export]
+        macro_rules! $name {
+            ($path: literal) => {{
+                // make sure it exists at compile time
+                let _ = include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/", $path));
+                $crate::$name(concat!(env!("CARGO_MANIFEST_DIR"), "/src/", $path))
+            }};
+        }
     };
 }
 

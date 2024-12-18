@@ -30,6 +30,8 @@ impl Options {
             Type::Angle => "Angle",
             Type::Angle2 => "Angle2",
             Type::Angle3 => "Angle3",
+            Type::VecLength2 => "VecLength2",
+            Type::VecLength3 => "VecLength3",
             Type::FragmentResolution => "FragmentResolution",
         };
         let rsolid = self.rsolid();
@@ -59,7 +61,7 @@ pub fn generate<O: Write>(options: &Options, defs: &[Definitions], out: &mut O) 
                 ("", "", "")
             };
 
-            let is_copy = m.parameters.values().all(|p| !matches!(p.ty, Type::String));
+            let is_copy = m.parameters.values().all(|p| p.ty.is_copy());
 
             for line in m.docs.lines() {
                 w!("/// {line}");

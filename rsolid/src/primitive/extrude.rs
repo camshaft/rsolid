@@ -13,6 +13,7 @@ pub struct LinearExtrude {
     center: Option<bool>,
     convexity: Option<crate::types::Scalar>,
     height: Option<crate::types::Length>,
+    twist: Option<crate::types::Angle>,
     vector: Option<crate::types::Length3>,
 }
 
@@ -41,6 +42,12 @@ impl LinearExtrude {
     }
 
     #[inline]
+    pub fn twist<T: Into<crate::types::Angle>>(mut self, twist: T) -> Self {
+        self.twist = Some(twist.into());
+        self
+    }
+
+    #[inline]
     pub fn vector<T: Into<crate::types::Length3>>(mut self, vector: T) -> Self {
         self.vector = Some(vector.into());
         self
@@ -59,6 +66,9 @@ impl ::core::fmt::Debug for LinearExtrude {
         }
         if let Some(value) = self.height.as_ref() {
             s.field("height", value);
+        }
+        if let Some(value) = self.twist.as_ref() {
+            s.field("twist", value);
         }
         if let Some(value) = self.vector.as_ref() {
             s.field("v", value);
@@ -86,6 +96,12 @@ impl crate::scad::Scad for LinearExtrude {
             (
                 "height",
                 self.height
+                    .as_ref()
+                    .map(|value| crate::scad::Scad::assign(value, f)),
+            ),
+            (
+                "twist",
+                self.twist
                     .as_ref()
                     .map(|value| crate::scad::Scad::assign(value, f)),
             ),

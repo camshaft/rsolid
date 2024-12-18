@@ -1,4 +1,4 @@
-[modules.xscale]
+[modules.scale_x]
 docs = """
 Scales children by the given factor on the X axis.
 """
@@ -8,10 +8,10 @@ code = """
 scale([x, 1, 1]) children();
 """
 
-[modules.xscale.parameters.x]
+[modules.scale_x.parameters.x]
 type = "scalar"
 
-[modules.yscale]
+[modules.scale_y]
 docs = """
 Scales children by the given factor on the Y axis.
 """
@@ -21,10 +21,10 @@ code = """
 scale([1, y, 1]) children();
 """
 
-[modules.yscale.parameters.y]
+[modules.scale_y.parameters.y]
 type = "scalar"
 
-[modules.zscale]
+[modules.scale_z]
 docs = """
 Scales children by the given factor on the Z axis.
 """
@@ -34,5 +34,5 @@ code = """
 scale([1, 1, z]) children();
 """
 
-[modules.yscale.parameters.z]
+[modules.scale_z.parameters.z]
 type = "scalar"

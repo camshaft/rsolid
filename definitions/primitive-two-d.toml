@@ -69,6 +69,7 @@ Fragment resolution
 type = "fragment_resolution"
 default = 0.0
 
+# Text
 [modules.text]
 docs = """
 
@@ -112,3 +113,45 @@ The vertical alignment for the text. Possible values are "top", "center", "basel
 type = "string"
 default = "left"
 # TODO add support for enums
+
+# Polygon
+[modules.polygon]
+docs = """
+The function polygon() creates a multiple sided shape from a list of x,y coordinates. A polygon is the most powerful 2D object. It can create anything that circle and squares can, as well as much more. This includes irregular shapes with both concave and convex edges. In addition it can place holes within that shape.
+"""
+dimensions = 2
+manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/2D_Primitives#polygon"
+
+[modules.polygon.constructors._default]
+arguments = ["points"]
+
+[modules.polygon.parameters.points]
+docs = """
+The list of x,y points of the polygon. : A vector of 2 element vectors.
+Note: points are indexed from 0 to n-1.
+"""
+type = "vec_length2"
+default = []
+
+[modules.polygon.parameters.paths]
+docs = """
+A closed shape is created by returning from the last point specified to the first.
+
+### Default
+If no path is specified, all points are used in the order listed.
+
+### Single Vector
+The order to traverse the points. Uses indices from 0 to n-1. May be in a different order and use all or part, of the points listed.
+
+### Multiple Vectors
+Creates primary and secondary shapes. Secondary shapes are subtracted from the primary shape (like difference()). Secondary shapes may be wholly or partially within the primary shape.
+"""
+type = "vec_length2"
+default = []
+
+[modules.polygon.parameters.convexity]
+docs = """
+Integer number of "inward" curves, ie. expected path crossings of an arbitrary line through the polygon
+"""
+type = "scalar"
+default = 1

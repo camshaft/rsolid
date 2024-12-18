@@ -1,5 +1,5 @@
 # X Axis
-[modules.xmirror]
+[modules.mirror_x]
 docs = """
 Mirrors children around the X axis
 """
@@ -10,7 +10,7 @@ mirror([1, 0, 0]) children();
 """
 
 # Y Axis
-[modules.ymirror]
+[modules.mirror_y]
 docs = """
 Mirrors children around the Y axis
 """
@@ -21,7 +21,7 @@ mirror([0, 1, 0]) children();
 """
 
 # Z Axis
-[modules.zmirror]
+[modules.mirror_z]
 docs = """
 Mirrors children around the Z axis
 """

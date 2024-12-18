@@ -105,3 +105,19 @@ pub trait ObjectExt<const DIMENSIONS: usize>: IntoObject<DIMENSIONS> + Sized {
         self.into_object() >> extensions::disable()
     }
 }
+
+pub trait ConversionExt {
+    fn inches(self) -> f64;
+}
+
+impl ConversionExt for f64 {
+    fn inches(self) -> f64 {
+        self * 25.4
+    }
+}
+
+impl ConversionExt for u64 {
+    fn inches(self) -> f64 {
+        self as f64 * 25.4
+    }
+}
