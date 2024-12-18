@@ -1,17 +1,19 @@
 /// Rotates children around the X axis by the given number of degrees.
 #[derive(Clone, Copy, Default)]
 #[must_use = "Objects must be returned in order to be rendered"]
-pub struct Xrot<const DIMENSIONS: usize> {
+pub struct RotateX<const DIMENSIONS: usize> {
     angle: Option<crate::types::Angle>,
 }
 
 /// Rotates children around the X axis by the given number of degrees.
 #[inline]
-pub fn xrot<const DIMENSIONS: usize>(angle: impl Into<crate::types::Angle>) -> Xrot<DIMENSIONS> {
-    Xrot::default().angle(angle)
+pub fn rotate_x<const DIMENSIONS: usize>(
+    angle: impl Into<crate::types::Angle>,
+) -> RotateX<DIMENSIONS> {
+    RotateX::default().angle(angle)
 }
 
-impl<const DIMENSIONS: usize> Xrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> RotateX<DIMENSIONS> {
     #[inline]
     pub fn angle<T: Into<crate::types::Angle>>(mut self, angle: T) -> Self {
         self.angle = Some(angle.into());
@@ -19,10 +21,10 @@ impl<const DIMENSIONS: usize> Xrot<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Debug for Xrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Debug for RotateX<DIMENSIONS> {
     #[allow(clippy::write_literal)]
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-        let mut s = f.debug_struct("xrot");
+        let mut s = f.debug_struct("rotate_x");
         if let Some(value) = self.angle.as_ref() {
             s.field("a", value);
         }
@@ -30,7 +32,7 @@ impl<const DIMENSIONS: usize> ::core::fmt::Debug for Xrot<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> crate::scad::Scad for Xrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::scad::Scad for RotateX<DIMENSIONS> {
     fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
         let name = f.module("(a=0) { rotate([a, 0, 0]) children(); }");
         let args = [(
@@ -43,13 +45,13 @@ impl<const DIMENSIONS: usize> crate::scad::Scad for Xrot<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Display for Xrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Display for RotateX<DIMENSIONS> {
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
         f.write_str(&crate::scad::Scad::to_scad(self))
     }
 }
 
-impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Xrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for RotateX<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
     fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
@@ -62,7 +64,7 @@ impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Xrot<DIMENSIONS> {
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add<T>
-    for Xrot<DIMENSIONS>
+    for RotateX<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -73,7 +75,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub<T>
-    for Xrot<DIMENSIONS>
+    for RotateX<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -84,7 +86,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::BitOr<T>
-    for Xrot<DIMENSIONS>
+    for RotateX<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -95,7 +97,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Bit
 }
 
 impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F>
-    for Xrot<DIMENSIONS>
+    for RotateX<DIMENSIONS>
 {
     type Output = F::Output;
 
@@ -105,14 +107,14 @@ impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F
     }
 }
 
-impl<const DIMENSIONS: usize> From<Xrot<DIMENSIONS>> for crate::Object<DIMENSIONS> {
+impl<const DIMENSIONS: usize> From<RotateX<DIMENSIONS>> for crate::Object<DIMENSIONS> {
     #[inline]
-    fn from(value: Xrot<DIMENSIONS>) -> Self {
+    fn from(value: RotateX<DIMENSIONS>) -> Self {
         crate::Object::new(value)
     }
 }
 
-impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for Xrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for RotateX<DIMENSIONS> {
     #[inline]
     fn into_object(self) -> crate::Object<DIMENSIONS> {
         crate::Object::new(self)
@@ -122,19 +124,19 @@ impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for Xrot<DIMENSIONS>
 /// Rotates children around the X axis by the given number of degrees at a centerpoint.
 #[derive(Clone, Copy, Default)]
 #[must_use = "Objects must be returned in order to be rendered"]
-pub struct XrotCp<const DIMENSIONS: usize> {
+pub struct RotateXAround<const DIMENSIONS: usize> {
     angle: Option<crate::types::Angle>,
     centerpoint: Option<crate::types::Length3>,
 }
 
 #[inline]
-pub fn xrot_cp<const DIMENSIONS: usize>(
+pub fn rotate_x_around<const DIMENSIONS: usize>(
     angle: impl Into<crate::types::Angle>,
-) -> XrotCp<DIMENSIONS> {
-    XrotCp::default().angle(angle)
+) -> RotateXAround<DIMENSIONS> {
+    RotateXAround::default().angle(angle)
 }
 
-impl<const DIMENSIONS: usize> XrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> RotateXAround<DIMENSIONS> {
     #[inline]
     pub fn angle<T: Into<crate::types::Angle>>(mut self, angle: T) -> Self {
         self.angle = Some(angle.into());
@@ -148,10 +150,10 @@ impl<const DIMENSIONS: usize> XrotCp<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Debug for XrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Debug for RotateXAround<DIMENSIONS> {
     #[allow(clippy::write_literal)]
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-        let mut s = f.debug_struct("xrot_cp");
+        let mut s = f.debug_struct("rotate_x_around");
         if let Some(value) = self.angle.as_ref() {
             s.field("a", value);
         }
@@ -162,7 +164,7 @@ impl<const DIMENSIONS: usize> ::core::fmt::Debug for XrotCp<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> crate::scad::Scad for XrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::scad::Scad for RotateXAround<DIMENSIONS> {
     fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
         let name = f.module("(a=0, cp=undef) { if (!is_undef(cp)) { translate(cp) rotate([a, 0, 0]) translate(-cp) children(); } else { rotate([a, 0, 0]) children(); } }");
         let args = [
@@ -183,13 +185,13 @@ impl<const DIMENSIONS: usize> crate::scad::Scad for XrotCp<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Display for XrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Display for RotateXAround<DIMENSIONS> {
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
         f.write_str(&crate::scad::Scad::to_scad(self))
     }
 }
 
-impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for XrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for RotateXAround<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
     fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
@@ -202,7 +204,7 @@ impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for XrotCp<DIMENSIONS>
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add<T>
-    for XrotCp<DIMENSIONS>
+    for RotateXAround<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -213,7 +215,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub<T>
-    for XrotCp<DIMENSIONS>
+    for RotateXAround<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -224,7 +226,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::BitOr<T>
-    for XrotCp<DIMENSIONS>
+    for RotateXAround<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -235,7 +237,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Bit
 }
 
 impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F>
-    for XrotCp<DIMENSIONS>
+    for RotateXAround<DIMENSIONS>
 {
     type Output = F::Output;
 
@@ -245,14 +247,14 @@ impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F
     }
 }
 
-impl<const DIMENSIONS: usize> From<XrotCp<DIMENSIONS>> for crate::Object<DIMENSIONS> {
+impl<const DIMENSIONS: usize> From<RotateXAround<DIMENSIONS>> for crate::Object<DIMENSIONS> {
     #[inline]
-    fn from(value: XrotCp<DIMENSIONS>) -> Self {
+    fn from(value: RotateXAround<DIMENSIONS>) -> Self {
         crate::Object::new(value)
     }
 }
 
-impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for XrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for RotateXAround<DIMENSIONS> {
     #[inline]
     fn into_object(self) -> crate::Object<DIMENSIONS> {
         crate::Object::new(self)
@@ -262,17 +264,19 @@ impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for XrotCp<DIMENSION
 /// Rotates children around the Y axis by the given number of degrees.
 #[derive(Clone, Copy, Default)]
 #[must_use = "Objects must be returned in order to be rendered"]
-pub struct Yrot<const DIMENSIONS: usize> {
+pub struct RotateY<const DIMENSIONS: usize> {
     angle: Option<crate::types::Angle>,
 }
 
 /// Rotates children around the Y axis by the given number of degrees.
 #[inline]
-pub fn yrot<const DIMENSIONS: usize>(angle: impl Into<crate::types::Angle>) -> Yrot<DIMENSIONS> {
-    Yrot::default().angle(angle)
+pub fn rotate_y<const DIMENSIONS: usize>(
+    angle: impl Into<crate::types::Angle>,
+) -> RotateY<DIMENSIONS> {
+    RotateY::default().angle(angle)
 }
 
-impl<const DIMENSIONS: usize> Yrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> RotateY<DIMENSIONS> {
     #[inline]
     pub fn angle<T: Into<crate::types::Angle>>(mut self, angle: T) -> Self {
         self.angle = Some(angle.into());
@@ -280,10 +284,10 @@ impl<const DIMENSIONS: usize> Yrot<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Debug for Yrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Debug for RotateY<DIMENSIONS> {
     #[allow(clippy::write_literal)]
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-        let mut s = f.debug_struct("yrot");
+        let mut s = f.debug_struct("rotate_y");
         if let Some(value) = self.angle.as_ref() {
             s.field("a", value);
         }
@@ -291,7 +295,7 @@ impl<const DIMENSIONS: usize> ::core::fmt::Debug for Yrot<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> crate::scad::Scad for Yrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::scad::Scad for RotateY<DIMENSIONS> {
     fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
         let name = f.module("(a=0) { rotate([0, a, 0]) children(); }");
         let args = [(
@@ -304,13 +308,13 @@ impl<const DIMENSIONS: usize> crate::scad::Scad for Yrot<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Display for Yrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Display for RotateY<DIMENSIONS> {
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
         f.write_str(&crate::scad::Scad::to_scad(self))
     }
 }
 
-impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Yrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for RotateY<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
     fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
@@ -323,7 +327,7 @@ impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Yrot<DIMENSIONS> {
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add<T>
-    for Yrot<DIMENSIONS>
+    for RotateY<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -334,7 +338,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub<T>
-    for Yrot<DIMENSIONS>
+    for RotateY<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -345,7 +349,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::BitOr<T>
-    for Yrot<DIMENSIONS>
+    for RotateY<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -356,7 +360,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Bit
 }
 
 impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F>
-    for Yrot<DIMENSIONS>
+    for RotateY<DIMENSIONS>
 {
     type Output = F::Output;
 
@@ -366,14 +370,14 @@ impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F
     }
 }
 
-impl<const DIMENSIONS: usize> From<Yrot<DIMENSIONS>> for crate::Object<DIMENSIONS> {
+impl<const DIMENSIONS: usize> From<RotateY<DIMENSIONS>> for crate::Object<DIMENSIONS> {
     #[inline]
-    fn from(value: Yrot<DIMENSIONS>) -> Self {
+    fn from(value: RotateY<DIMENSIONS>) -> Self {
         crate::Object::new(value)
     }
 }
 
-impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for Yrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for RotateY<DIMENSIONS> {
     #[inline]
     fn into_object(self) -> crate::Object<DIMENSIONS> {
         crate::Object::new(self)
@@ -383,19 +387,19 @@ impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for Yrot<DIMENSIONS>
 /// Rotates children around the Y axis by the given number of degrees at a centerpoint.
 #[derive(Clone, Copy, Default)]
 #[must_use = "Objects must be returned in order to be rendered"]
-pub struct YrotCp<const DIMENSIONS: usize> {
+pub struct RotateYAround<const DIMENSIONS: usize> {
     angle: Option<crate::types::Angle>,
     centerpoint: Option<crate::types::Length3>,
 }
 
 #[inline]
-pub fn yrot_cp<const DIMENSIONS: usize>(
+pub fn rotate_y_around<const DIMENSIONS: usize>(
     angle: impl Into<crate::types::Angle>,
-) -> YrotCp<DIMENSIONS> {
-    YrotCp::default().angle(angle)
+) -> RotateYAround<DIMENSIONS> {
+    RotateYAround::default().angle(angle)
 }
 
-impl<const DIMENSIONS: usize> YrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> RotateYAround<DIMENSIONS> {
     #[inline]
     pub fn angle<T: Into<crate::types::Angle>>(mut self, angle: T) -> Self {
         self.angle = Some(angle.into());
@@ -409,10 +413,10 @@ impl<const DIMENSIONS: usize> YrotCp<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Debug for YrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Debug for RotateYAround<DIMENSIONS> {
     #[allow(clippy::write_literal)]
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-        let mut s = f.debug_struct("yrot_cp");
+        let mut s = f.debug_struct("rotate_y_around");
         if let Some(value) = self.angle.as_ref() {
             s.field("a", value);
         }
@@ -423,7 +427,7 @@ impl<const DIMENSIONS: usize> ::core::fmt::Debug for YrotCp<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> crate::scad::Scad for YrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::scad::Scad for RotateYAround<DIMENSIONS> {
     fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
         let name = f.module("(a=0, cp=undef) { if (!is_undef(cp)) { translate(cp) rotate([0, a, 0]) translate(-cp) children(); } else { rotate([0, a, 0]) children(); } }");
         let args = [
@@ -444,13 +448,13 @@ impl<const DIMENSIONS: usize> crate::scad::Scad for YrotCp<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Display for YrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Display for RotateYAround<DIMENSIONS> {
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
         f.write_str(&crate::scad::Scad::to_scad(self))
     }
 }
 
-impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for YrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for RotateYAround<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
     fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
@@ -463,7 +467,7 @@ impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for YrotCp<DIMENSIONS>
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add<T>
-    for YrotCp<DIMENSIONS>
+    for RotateYAround<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -474,7 +478,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub<T>
-    for YrotCp<DIMENSIONS>
+    for RotateYAround<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -485,7 +489,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::BitOr<T>
-    for YrotCp<DIMENSIONS>
+    for RotateYAround<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -496,7 +500,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Bit
 }
 
 impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F>
-    for YrotCp<DIMENSIONS>
+    for RotateYAround<DIMENSIONS>
 {
     type Output = F::Output;
 
@@ -506,14 +510,14 @@ impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F
     }
 }
 
-impl<const DIMENSIONS: usize> From<YrotCp<DIMENSIONS>> for crate::Object<DIMENSIONS> {
+impl<const DIMENSIONS: usize> From<RotateYAround<DIMENSIONS>> for crate::Object<DIMENSIONS> {
     #[inline]
-    fn from(value: YrotCp<DIMENSIONS>) -> Self {
+    fn from(value: RotateYAround<DIMENSIONS>) -> Self {
         crate::Object::new(value)
     }
 }
 
-impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for YrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for RotateYAround<DIMENSIONS> {
     #[inline]
     fn into_object(self) -> crate::Object<DIMENSIONS> {
         crate::Object::new(self)
@@ -523,17 +527,19 @@ impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for YrotCp<DIMENSION
 /// Rotates children around the Z axis by the given number of degrees.
 #[derive(Clone, Copy, Default)]
 #[must_use = "Objects must be returned in order to be rendered"]
-pub struct Zrot<const DIMENSIONS: usize> {
+pub struct RotateZ<const DIMENSIONS: usize> {
     angle: Option<crate::types::Angle>,
 }
 
 /// Rotates children around the Z axis by the given number of degrees.
 #[inline]
-pub fn zrot<const DIMENSIONS: usize>(angle: impl Into<crate::types::Angle>) -> Zrot<DIMENSIONS> {
-    Zrot::default().angle(angle)
+pub fn rotate_z<const DIMENSIONS: usize>(
+    angle: impl Into<crate::types::Angle>,
+) -> RotateZ<DIMENSIONS> {
+    RotateZ::default().angle(angle)
 }
 
-impl<const DIMENSIONS: usize> Zrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> RotateZ<DIMENSIONS> {
     #[inline]
     pub fn angle<T: Into<crate::types::Angle>>(mut self, angle: T) -> Self {
         self.angle = Some(angle.into());
@@ -541,10 +547,10 @@ impl<const DIMENSIONS: usize> Zrot<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Debug for Zrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Debug for RotateZ<DIMENSIONS> {
     #[allow(clippy::write_literal)]
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-        let mut s = f.debug_struct("zrot");
+        let mut s = f.debug_struct("rotate_z");
         if let Some(value) = self.angle.as_ref() {
             s.field("a", value);
         }
@@ -552,7 +558,7 @@ impl<const DIMENSIONS: usize> ::core::fmt::Debug for Zrot<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> crate::scad::Scad for Zrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::scad::Scad for RotateZ<DIMENSIONS> {
     fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
         let name = f.module("(a=0) { rotate([0, 0, a]) children(); }");
         let args = [(
@@ -565,13 +571,13 @@ impl<const DIMENSIONS: usize> crate::scad::Scad for Zrot<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Display for Zrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Display for RotateZ<DIMENSIONS> {
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
         f.write_str(&crate::scad::Scad::to_scad(self))
     }
 }
 
-impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Zrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for RotateZ<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
     fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
@@ -584,7 +590,7 @@ impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for Zrot<DIMENSIONS> {
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add<T>
-    for Zrot<DIMENSIONS>
+    for RotateZ<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -595,7 +601,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub<T>
-    for Zrot<DIMENSIONS>
+    for RotateZ<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -606,7 +612,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::BitOr<T>
-    for Zrot<DIMENSIONS>
+    for RotateZ<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -617,7 +623,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Bit
 }
 
 impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F>
-    for Zrot<DIMENSIONS>
+    for RotateZ<DIMENSIONS>
 {
     type Output = F::Output;
 
@@ -627,14 +633,14 @@ impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F
     }
 }
 
-impl<const DIMENSIONS: usize> From<Zrot<DIMENSIONS>> for crate::Object<DIMENSIONS> {
+impl<const DIMENSIONS: usize> From<RotateZ<DIMENSIONS>> for crate::Object<DIMENSIONS> {
     #[inline]
-    fn from(value: Zrot<DIMENSIONS>) -> Self {
+    fn from(value: RotateZ<DIMENSIONS>) -> Self {
         crate::Object::new(value)
     }
 }
 
-impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for Zrot<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for RotateZ<DIMENSIONS> {
     #[inline]
     fn into_object(self) -> crate::Object<DIMENSIONS> {
         crate::Object::new(self)
@@ -644,19 +650,19 @@ impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for Zrot<DIMENSIONS>
 /// Rotates children around the Z axis by the given number of degrees at a centerpoint.
 #[derive(Clone, Copy, Default)]
 #[must_use = "Objects must be returned in order to be rendered"]
-pub struct ZrotCp<const DIMENSIONS: usize> {
+pub struct RotateZAround<const DIMENSIONS: usize> {
     angle: Option<crate::types::Angle>,
     centerpoint: Option<crate::types::Length3>,
 }
 
 #[inline]
-pub fn zrot_cp<const DIMENSIONS: usize>(
+pub fn rotate_z_around<const DIMENSIONS: usize>(
     angle: impl Into<crate::types::Angle>,
-) -> ZrotCp<DIMENSIONS> {
-    ZrotCp::default().angle(angle)
+) -> RotateZAround<DIMENSIONS> {
+    RotateZAround::default().angle(angle)
 }
 
-impl<const DIMENSIONS: usize> ZrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> RotateZAround<DIMENSIONS> {
     #[inline]
     pub fn angle<T: Into<crate::types::Angle>>(mut self, angle: T) -> Self {
         self.angle = Some(angle.into());
@@ -670,10 +676,10 @@ impl<const DIMENSIONS: usize> ZrotCp<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Debug for ZrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Debug for RotateZAround<DIMENSIONS> {
     #[allow(clippy::write_literal)]
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
-        let mut s = f.debug_struct("zrot_cp");
+        let mut s = f.debug_struct("rotate_z_around");
         if let Some(value) = self.angle.as_ref() {
             s.field("a", value);
         }
@@ -684,7 +690,7 @@ impl<const DIMENSIONS: usize> ::core::fmt::Debug for ZrotCp<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> crate::scad::Scad for ZrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::scad::Scad for RotateZAround<DIMENSIONS> {
     fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
         let name = f.module("(a=0, cp=undef) { if (!is_undef(cp)) { translate(cp) rotate([0, 0, a]) translate(-cp) children(); } else { rotate([0, 0, a]) children(); } }");
         let args = [
@@ -705,13 +711,13 @@ impl<const DIMENSIONS: usize> crate::scad::Scad for ZrotCp<DIMENSIONS> {
     }
 }
 
-impl<const DIMENSIONS: usize> ::core::fmt::Display for ZrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> ::core::fmt::Display for RotateZAround<DIMENSIONS> {
     fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
         f.write_str(&crate::scad::Scad::to_scad(self))
     }
 }
 
-impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for ZrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for RotateZAround<DIMENSIONS> {
     type Output = crate::Object<DIMENSIONS>;
 
     fn apply(self, child: &crate::Object<DIMENSIONS>) -> Self::Output {
@@ -724,7 +730,7 @@ impl<const DIMENSIONS: usize> crate::Operator<DIMENSIONS> for ZrotCp<DIMENSIONS>
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add<T>
-    for ZrotCp<DIMENSIONS>
+    for RotateZAround<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -735,7 +741,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub<T>
-    for ZrotCp<DIMENSIONS>
+    for RotateZAround<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -746,7 +752,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub
 }
 
 impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::BitOr<T>
-    for ZrotCp<DIMENSIONS>
+    for RotateZAround<DIMENSIONS>
 {
     type Output = crate::Object<DIMENSIONS>;
 
@@ -757,7 +763,7 @@ impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Bit
 }
 
 impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F>
-    for ZrotCp<DIMENSIONS>
+    for RotateZAround<DIMENSIONS>
 {
     type Output = F::Output;
 
@@ -767,14 +773,14 @@ impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F
     }
 }
 
-impl<const DIMENSIONS: usize> From<ZrotCp<DIMENSIONS>> for crate::Object<DIMENSIONS> {
+impl<const DIMENSIONS: usize> From<RotateZAround<DIMENSIONS>> for crate::Object<DIMENSIONS> {
     #[inline]
-    fn from(value: ZrotCp<DIMENSIONS>) -> Self {
+    fn from(value: RotateZAround<DIMENSIONS>) -> Self {
         crate::Object::new(value)
     }
 }
 
-impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for ZrotCp<DIMENSIONS> {
+impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for RotateZAround<DIMENSIONS> {
     #[inline]
     fn into_object(self) -> crate::Object<DIMENSIONS> {
         crate::Object::new(self)

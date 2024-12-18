@@ -12,7 +12,7 @@ fn cylinder_test() {
 
 pub fn cube(width: f64, height: f64, shape: impl IntoObject<2>) -> Object {
     let shape = &shape.into_object();
-    let a = edge(height, shape) >> xrot(90);
+    let a = edge(height, shape) >> rotate_x(90);
     let b = edge(width, shape) >> rotate([90, 0, 90]);
     let a1 = &a >> right(width / 2.0);
     let a2 = &a1 >> mirror([1, 0, 0]);

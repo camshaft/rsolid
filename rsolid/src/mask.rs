@@ -25,7 +25,7 @@ fn fillet_test() {
 }
 
 pub fn chamfer(width: f64, height: f64) -> Object<2> {
-    let tri = triangle::right(width, height) >> zrot(180);
+    let tri = triangle::right(width, height) >> rotate_z(180);
     let padding = preview_padding(width, height);
 
     (tri + padding) >> back(height / 2.0) >> left(width / 2.0)

@@ -1,5 +1,5 @@
 # X Axis
-[modules.xrot]
+[modules.rotate_x]
 docs = """
 Rotates children around the X axis by the given number of degrees.
 """
@@ -9,12 +9,12 @@ code = """
 rotate([a, 0, 0]) children();
 """
 
-[modules.xrot.parameters.angle]
+[modules.rotate_x.parameters.angle]
 name = "a"
 type = "angle"
 default = 0.0
 
-[modules.xrot_cp]
+[modules.rotate_x_around]
 docs = """
 Rotates children around the X axis by the given number of degrees at a centerpoint.
 """
@@ -25,21 +25,21 @@ if (!is_undef(cp)) { translate(cp) rotate([a, 0, 0]) translate(-cp) children(); 
 else { rotate([a, 0, 0]) children(); }
 """
 
-[modules.xrot_cp.constructors._default]
+[modules.rotate_x_around.constructors._default]
 arguments = ["angle"]
 
-[modules.xrot_cp.parameters.angle]
+[modules.rotate_x_around.parameters.angle]
 name = "a"
 type = "angle"
 default = 0.0
 
-[modules.xrot_cp.parameters.centerpoint]
+[modules.rotate_x_around.parameters.centerpoint]
 name = "cp"
 type = "length3"
 alt = ["length"]
 
 # Y Axis
-[modules.yrot]
+[modules.rotate_y]
 docs = """
 Rotates children around the Y axis by the given number of degrees.
 """
@@ -49,12 +49,12 @@ code = """
 rotate([0, a, 0]) children();
 """
 
-[modules.yrot.parameters.angle]
+[modules.rotate_y.parameters.angle]
 name = "a"
 type = "angle"
 default = 0.0
 
-[modules.yrot_cp]
+[modules.rotate_y_around]
 docs = """
 Rotates children around the Y axis by the given number of degrees at a centerpoint.
 """
@@ -65,21 +65,21 @@ if (!is_undef(cp)) { translate(cp) rotate([0, a, 0]) translate(-cp) children(); 
 else { rotate([0, a, 0]) children(); }
 """
 
-[modules.yrot_cp.constructors._default]
+[modules.rotate_y_around.constructors._default]
 arguments = ["angle"]
 
-[modules.yrot_cp.parameters.angle]
+[modules.rotate_y_around.parameters.angle]
 name = "a"
 type = "angle"
 default = 0.0
 
-[modules.yrot_cp.parameters.centerpoint]
+[modules.rotate_y_around.parameters.centerpoint]
 name = "cp"
 type = "length3"
 alt = ["length"]
 
 # Z Axis
-[modules.zrot]
+[modules.rotate_z]
 docs = """
 Rotates children around the Z axis by the given number of degrees.
 """
@@ -89,12 +89,12 @@ code = """
 rotate([0, 0, a]) children();
 """
 
-[modules.zrot.parameters.angle]
+[modules.rotate_z.parameters.angle]
 name = "a"
 type = "angle"
 default = 0.0
 
-[modules.zrot_cp]
+[modules.rotate_z_around]
 docs = """
 Rotates children around the Z axis by the given number of degrees at a centerpoint.
 """
@@ -105,15 +105,15 @@ if (!is_undef(cp)) { translate(cp) rotate([0, 0, a]) translate(-cp) children(); 
 else { rotate([0, 0, a]) children(); }
 """
 
-[modules.zrot_cp.constructors._default]
+[modules.rotate_z_around.constructors._default]
 arguments = ["angle"]
 
-[modules.zrot_cp.parameters.angle]
+[modules.rotate_z_around.parameters.angle]
 name = "a"
 type = "angle"
 default = 0.0
 
-[modules.zrot_cp.parameters.centerpoint]
+[modules.rotate_z_around.parameters.centerpoint]
 name = "cp"
 type = "length3"
 alt = ["length"]

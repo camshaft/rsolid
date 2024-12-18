@@ -6,10 +6,10 @@ fn wheel() -> Object {
 
 fn axle() -> Object {
     let width = 120;
-    let a = cylinder(width, 10).center(true) >> yrot(90);
+    let a = cylinder(width, 10).center(true) >> rotate_y(90);
 
-    let w1 = wheel() >> yrot(90) >> left(width / 2);
-    let w2 = wheel() >> yrot(90) >> right(width / 2);
+    let w1 = wheel() >> rotate_y(90) >> left(width / 2);
+    let w2 = wheel() >> rotate_y(90) >> right(width / 2);
 
     w1 + w2 + a
 }
