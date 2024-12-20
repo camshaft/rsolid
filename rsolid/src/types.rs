@@ -43,6 +43,38 @@ macro_rules! impl_simple {
                 f.value(self)
             }
         }
+
+        impl ops::Add for $name {
+            type Output = $name;
+
+            #[inline]
+            fn add(self, rhs: $name) -> Self::Output {
+                $name(self.0 + rhs.0)
+            }
+        }
+
+        impl ops::AddAssign for $name {
+            #[inline]
+            fn add_assign(&mut self, rhs: $name) {
+                self.0 += rhs.0;
+            }
+        }
+
+        impl ops::Sub for $name {
+            type Output = $name;
+
+            #[inline]
+            fn sub(self, rhs: $name) -> Self::Output {
+                $name(self.0 - rhs.0)
+            }
+        }
+
+        impl ops::SubAssign for $name {
+            #[inline]
+            fn sub_assign(&mut self, rhs: $name) {
+                self.0 -= rhs.0;
+            }
+        }
     };
 }
 
@@ -69,12 +101,12 @@ impl_simple!(FragmentResolution);
 
 macro_rules! impl_vec {
     ($name:ident, $vec:ident, $inner:ty, $count:literal) => {
-        #[derive(Clone, Copy, Debug, Default, PartialEq, PartialOrd)]
+        #[derive(Clone, Copy, Default, PartialEq, PartialOrd)]
         pub struct $name(pub [$inner; $count]);
 
-        impl fmt::Display for $name {
+        impl fmt::Debug for $name {
             fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-                write!(f, "[")?;
+                write!(f, concat!(stringify!($name), "["))?;
                 for (idx, v) in self.0.iter().enumerate() {
                     if idx == 0 {
                         write!(f, "{v}")?;
@@ -86,17 +118,23 @@ macro_rules! impl_vec {
             }
         }
 
+        impl fmt::Display for $name {
+            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                write!(f, "[")?;
+                for (idx, v) in self.0.iter().enumerate() {
+                    if idx == 0 {
+                        write!(f, "{v}")?;
+                    } else {
+                        write!(f, ",{v}")?;
+                    }
+                }
+                write!(f, "]")
+            }
+        }
+
         impl Scad for $name {
             fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
-                let mut out = "[".to_string();
-                for (idx, arg) in self.0.iter().enumerate() {
-                    if idx != 0 {
-                        out.push_str(", ");
-                    }
-                    out += &arg.assign(f).to_string();
-                }
-                out.push(']');
-                f.value(out)
+                f.value(&self)
             }
         }
 
@@ -142,6 +180,90 @@ macro_rules! impl_vec {
             }
         }
 
+        impl ops::Add for $name {
+            type Output = $name;
+
+            #[inline]
+            fn add(mut self, rhs: $name) -> Self::Output {
+                self += rhs;
+                self
+            }
+        }
+
+        impl ops::AddAssign for $name {
+            #[inline]
+            fn add_assign(&mut self, rhs: $name) {
+                for (a, b) in self.0.iter_mut().zip(rhs.0) {
+                    *a += b;
+                }
+            }
+        }
+
+        impl ops::Sub for $name {
+            type Output = $name;
+
+            #[inline]
+            fn sub(mut self, rhs: $name) -> Self::Output {
+                self -= rhs;
+                self
+            }
+        }
+
+        impl ops::SubAssign for $name {
+            #[inline]
+            fn sub_assign(&mut self, rhs: $name) {
+                for (a, b) in self.0.iter_mut().zip(rhs.0) {
+                    *a -= b;
+                }
+            }
+        }
+
+        impl ops::Mul<f64> for $name {
+            type Output = $name;
+
+            #[inline]
+            fn mul(mut self, rhs: f64) -> Self::Output {
+                for a in self.0.iter_mut() {
+                    a.0 *= rhs;
+                }
+                self
+            }
+        }
+
+        impl ops::Div<f64> for $name {
+            type Output = $name;
+
+            #[inline]
+            fn div(mut self, rhs: f64) -> Self::Output {
+                for a in self.0.iter_mut() {
+                    a.0 /= rhs;
+                }
+                self
+            }
+        }
+
+        impl Scad for std::vec::Vec<$name> {
+            fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
+                struct Fmt<'a>(&'a [$name]);
+
+                impl<'a> fmt::Display for Fmt<'a> {
+                    #[inline]
+                    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+                        write!(f, "[")?;
+                        for (idx, arg) in self.0.iter().enumerate() {
+                            if idx != 0 {
+                                write!(f, ",")?;
+                            }
+                            write!(f, "{arg}")?;
+                        }
+                        write!(f, "]")
+                    }
+                }
+
+                f.value(Fmt(self))
+            }
+        }
+
         #[derive(Clone, Debug, Default, PartialEq, PartialOrd)]
         pub struct $vec(pub std::vec::Vec<$name>);
 
@@ -153,15 +275,7 @@ macro_rules! impl_vec {
 
         impl Scad for $vec {
             fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
-                let mut out = "[".to_string();
-                for (idx, arg) in self.0.iter().enumerate() {
-                    if idx != 0 {
-                        out.push_str(", ");
-                    }
-                    out += &arg.assign(f).to_string();
-                }
-                out.push(']');
-                f.value(out)
+                self.0.assign(f)
             }
         }
 

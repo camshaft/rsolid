@@ -12,6 +12,7 @@ pub mod mask;
 mod object;
 mod operator;
 mod parameter;
+pub mod path;
 mod primitive;
 pub mod scad;
 mod shape;
@@ -25,6 +26,7 @@ pub use helpers::*;
 pub use import::*;
 pub use object::{IntoObject, Object};
 pub use operator::Operator;
+pub use path::Path;
 pub use primitive::*;
 pub use shape::*;
 pub use types::*;
@@ -51,6 +53,8 @@ pub fn export<V: scad::Scad>(v: &V, path: &std::path::Path, renders: &[&str]) {
             .arg(ext)
             .arg("--render")
             .arg("true")
+            .arg("--enable")
+            .arg("manifold")
             .arg(&scad)
             .stderr(std::process::Stdio::inherit())
             .stdout(std::process::Stdio::piped())
