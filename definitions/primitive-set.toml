@@ -23,3 +23,9 @@ manual_url = "https://en.wikibooks.org/wiki/OpenSCAD_User_Manual/CSG_Modelling#i
 dimensions = 0
 operator = true
 
+[modules.empty]
+docs = """
+Returns an empty set of children
+"""
+dimensions = 0
+code = ""

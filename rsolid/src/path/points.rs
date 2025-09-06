@@ -1,8 +1,26 @@
+use std::ops;
+
 use crate::types as t;
 
 #[derive(Clone, Debug, Default)]
 pub struct Points {
     points: Vec<t::Length2>,
+}
+
+impl ops::Deref for Points {
+    type Target = Vec<t::Length2>;
+
+    #[inline]
+    fn deref(&self) -> &Self::Target {
+        &self.points
+    }
+}
+
+impl ops::DerefMut for Points {
+    #[inline]
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.points
+    }
 }
 
 impl Points {

@@ -309,3 +309,26 @@ impl_vec!(Length2, VecLength2, Length, 2);
 impl_vec!(Length3, VecLength3, Length, 3);
 impl_vec!(Scalar2, VecScalar2, Scalar, 2);
 impl_vec!(Scalar3, VecScalar3, Scalar, 3);
+
+impl Length {
+    pub fn with_angle<A: Into<Angle>>(self, angle: A) -> Length2 {
+        let angle = angle.into();
+        let x = angle.0.to_radians().cos() * self.0;
+        let y = angle.0.to_radians().sin() * self.0;
+        [x, y].into()
+    }
+}
+
+impl Length2 {
+    #[inline]
+    pub fn angle(self) -> Angle {
+        self.0[1].0.atan2(self.0[0].0).into()
+    }
+}
+
+impl From<Length2> for Length3 {
+    fn from(value: Length2) -> Self {
+        let [x, y] = value.0;
+        [x, y, Length::default()].into()
+    }
+}

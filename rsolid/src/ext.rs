@@ -108,16 +108,25 @@ pub trait ObjectExt<const DIMENSIONS: usize>: IntoObject<DIMENSIONS> + Sized {
 
 pub trait ConversionExt {
     fn inches(self) -> f64;
+    fn feet(self) -> f64;
 }
 
 impl ConversionExt for f64 {
     fn inches(self) -> f64 {
         self * 25.4
     }
+
+    fn feet(self) -> f64 {
+        (self * 12.0).inches()
+    }
 }
 
 impl ConversionExt for u64 {
     fn inches(self) -> f64 {
         self as f64 * 25.4
+    }
+
+    fn feet(self) -> f64 {
+        (self * 12).inches()
     }
 }

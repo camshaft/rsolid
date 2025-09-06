@@ -103,6 +103,99 @@ impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for Difference<DIMEN
     }
 }
 
+/// Returns an empty set of children
+#[derive(Clone, Copy, Default)]
+#[must_use = "Objects must be returned in order to be rendered"]
+pub struct Empty<const DIMENSIONS: usize> {}
+
+/// Returns an empty set of children
+#[inline]
+pub fn empty<const DIMENSIONS: usize>() -> Empty<DIMENSIONS> {
+    Empty::default()
+}
+
+impl<const DIMENSIONS: usize> Empty<DIMENSIONS> {}
+
+impl<const DIMENSIONS: usize> ::core::fmt::Debug for Empty<DIMENSIONS> {
+    #[allow(clippy::write_literal)]
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        let mut s = f.debug_struct("empty");
+        s.finish()
+    }
+}
+
+impl<const DIMENSIONS: usize> crate::scad::Scad for Empty<DIMENSIONS> {
+    fn assign(&self, f: &mut crate::scad::Formatter) -> crate::scad::Assignment {
+        let name = f.module("() {  }");
+        let args = [];
+        f.call(name, args, false)
+    }
+}
+
+impl<const DIMENSIONS: usize> ::core::fmt::Display for Empty<DIMENSIONS> {
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        f.write_str(&crate::scad::Scad::to_scad(self))
+    }
+}
+
+impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Add<T>
+    for Empty<DIMENSIONS>
+{
+    type Output = crate::Object<DIMENSIONS>;
+
+    fn add(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().add(other.into_object())
+    }
+}
+
+impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Sub<T>
+    for Empty<DIMENSIONS>
+{
+    type Output = crate::Object<DIMENSIONS>;
+
+    fn sub(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().sub(other.into_object())
+    }
+}
+
+impl<T: crate::IntoObject<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::BitOr<T>
+    for Empty<DIMENSIONS>
+{
+    type Output = crate::Object<DIMENSIONS>;
+
+    fn bitor(self, other: T) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object().bitor(other.into_object())
+    }
+}
+
+impl<F: crate::Operator<DIMENSIONS>, const DIMENSIONS: usize> ::core::ops::Shr<F>
+    for Empty<DIMENSIONS>
+{
+    type Output = F::Output;
+
+    fn shr(self, f: F) -> Self::Output {
+        use crate::IntoObject as _;
+        self.into_object() >> f
+    }
+}
+
+impl<const DIMENSIONS: usize> From<Empty<DIMENSIONS>> for crate::Object<DIMENSIONS> {
+    #[inline]
+    fn from(value: Empty<DIMENSIONS>) -> Self {
+        crate::Object::new(value)
+    }
+}
+
+impl<const DIMENSIONS: usize> crate::IntoObject<DIMENSIONS> for Empty<DIMENSIONS> {
+    #[inline]
+    fn into_object(self) -> crate::Object<DIMENSIONS> {
+        crate::Object::new(self)
+    }
+}
+
 /// Creates the intersection of all child nodes. This keeps the overlapping portion (logical and).
 /// Only the area which is common or shared by all children is retained.
 #[derive(Clone, Copy, Default)]

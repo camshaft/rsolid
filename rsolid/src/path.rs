@@ -13,6 +13,7 @@ mod quadratic;
 pub struct Path {
     commands: Vec<Command>,
     cursor: t::Length2,
+    angle: t::Angle,
     includes_curves: bool,
 }
 
@@ -79,6 +80,10 @@ enum Command {
         end: t::Length2,
         tension: t::Scalar,
     },
+    Stroke {
+        prev: t::Length,
+        next: t::Length,
+    },
 }
 
 impl Command {
@@ -92,6 +97,7 @@ impl Command {
             | Command::SmoothQuadraticBezierCurve { start, .. }
             | Command::EllipticalArc { start, .. }
             | Command::CatmullRom { start, .. } => start,
+            Command::Stroke { .. } => unreachable!(),
         }
     }
 
@@ -105,6 +111,7 @@ impl Command {
             | Command::SmoothQuadraticBezierCurve { end, .. }
             | Command::EllipticalArc { end, .. }
             | Command::CatmullRom { end, .. } => end,
+            Command::Stroke { .. } => unreachable!(),
         }
     }
 }
@@ -125,6 +132,16 @@ macro_rules! cmd {
 }
 
 impl Path {
+    #[inline]
+    pub fn angle(&self) -> t::Angle {
+        self.angle
+    }
+
+    #[inline]
+    pub fn position(&self) -> t::Length2 {
+        self.cursor
+    }
+
     /// Move the current point to the coordinate `x`, `y`.
     ///
     /// Any subsequent coordinate pair(s) are interpreted as parameter(s) for implicit absolute
@@ -150,6 +167,16 @@ impl Path {
     {
         self.cursor = self.resolve(Position::Relative, dx_dy.into());
         self
+    }
+
+    /// Moves forward by the given length at the current angle
+    #[inline]
+    pub fn move_fwd<P>(self, length: P) -> Self
+    where
+        P: Into<t::Length>,
+    {
+        let xy = length.into().with_angle(self.angle);
+        self.move_by(xy)
     }
 
     /// Draw a line from the current point to the end point specified by `x`, `y`.
@@ -179,6 +206,16 @@ impl Path {
         cmd!(self, Line, Relative, end)
     }
 
+    /// Draws a line forward by the given length at the current angle
+    #[inline]
+    pub fn line_fwd<P>(self, length: P) -> Self
+    where
+        P: Into<t::Length>,
+    {
+        let xy = length.into().with_angle(self.angle);
+        self.line_by(xy)
+    }
+
     #[inline]
     pub fn quadratic_curve_to<P, C>(mut self, end: P, control: C) -> Self
     where
@@ -196,6 +233,17 @@ impl Path {
         C: Into<t::Length2>,
     {
         self.includes_curves = true;
+        cmd!(self, QuadraticBezierCurve, Relative, end, control)
+    }
+
+    #[inline]
+    pub fn quadratic_curve_fwd<P, C>(mut self, length: P, control: C) -> Self
+    where
+        P: Into<t::Length>,
+        C: Into<t::Length2>,
+    {
+        self.includes_curves = true;
+        let end = length.into().with_angle(self.angle);
         cmd!(self, QuadraticBezierCurve, Relative, end, control)
     }
 
@@ -225,6 +273,30 @@ impl Path {
         C1: Into<t::Length2>,
     {
         self.includes_curves = true;
+        cmd!(
+            self,
+            CubicBezierCurve,
+            Relative,
+            end,
+            start_control,
+            end_control
+        )
+    }
+
+    #[inline]
+    pub fn cubic_curve_fwd<P, C0, C1>(
+        mut self,
+        length: P,
+        start_control: C0,
+        end_control: C1,
+    ) -> Self
+    where
+        P: Into<t::Length>,
+        C0: Into<t::Length2>,
+        C1: Into<t::Length2>,
+    {
+        self.includes_curves = true;
+        let end = length.into().with_angle(self.angle);
         cmd!(
             self,
             CubicBezierCurve,
@@ -268,6 +340,35 @@ impl Path {
             end,
             tension,
         });
+        self
+    }
+
+    #[inline]
+    pub fn catmull_rom_fwd<P, T>(mut self, length: P, tension: T) -> Self
+    where
+        P: Into<t::Length>,
+        T: Into<t::Scalar>,
+    {
+        self.includes_curves = true;
+        let start = self.cursor;
+        let end = length.into().with_angle(self.angle);
+        let end = self.resolve(Position::Relative, end);
+        let tension = tension.into();
+        self.push_cmd(Command::CatmullRom {
+            start,
+            end,
+            tension,
+        });
+        self
+    }
+
+    /// Rotates by the provided angle
+    #[inline]
+    pub fn rotate<A>(mut self, angle: A) -> Self
+    where
+        A: Into<t::Angle>,
+    {
+        self.angle += angle.into();
         self
     }
 
@@ -406,11 +507,30 @@ mod tests {
     #[test]
     fn line_segment_test() {
         let mut path = Path::default().move_to(0);
-        for _ in 0..4 {
-            path = path.line_by(4).line_by([4, -4]);
+        let dx = 10;
+        let dy = 5;
+        for _ in 0..2 {
+            path = path.line_by([dx, dy]).line_by([dx, -dy]);
         }
 
-        let scad = path.into_line(1).to_scad();
+        let scad = path.into_line(1.0).to_scad();
+
+        assert_2d_snapshot!(scad);
+    }
+
+    #[test]
+    fn catmull_rom_segment_test() {
+        let mut path = Path::default().move_to(0);
+        let dx = 10;
+        let dy = 5;
+        let tension = 1.0;
+        for _ in 0..2 {
+            path = path
+                .catmull_rom_by([dx, dy], tension)
+                .catmull_rom_by([dx, -dy], tension);
+        }
+
+        let scad = path.into_line(1.0).to_scad();
 
         assert_2d_snapshot!(scad);
     }

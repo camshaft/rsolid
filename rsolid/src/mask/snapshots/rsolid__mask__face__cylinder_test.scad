@@ -1,8 +1,8 @@
 function _v0() = true;
-function _v1() = 10;
-function _v2() = [_v1(), _v1()];
-module _v3() { square(center=_v0(), size=_v2()); }
-module _v4() { circle(r=_v1()); }
+function _v1() = [10,10];
+module _v2() { square(center=_v0(), size=_v1()); }
+function _v3() = 10;
+module _v4() { circle(r=_v3()); }
 module _v5 (y=undef) { translate([0, -y, 0]) children(); }
 function _v6() = 5;
 module _v7() { _v5(y=_v6()) children(); }
@@ -10,27 +10,26 @@ module _v8() { _v7() _v4(); }
 module _v9 (x=undef) { translate([-x, 0, 0]) children(); }
 module _v10() { _v9(x=_v6()) children(); }
 module _v11() { _v10() _v8(); }
-module _v12() { difference() { _v3(); _v11(); }; }
-function _v13() = 0.01;
-function _v14() = [_v1(), _v13()];
-module _v15() { square(center=_v0(), size=_v14()); }
-module _v16 (y=undef) { translate([0, y, 0]) children(); }
-module _v17() { _v16(y=_v6()) children(); }
-module _v18() { _v17() _v15(); }
-function _v19() = [_v13(), _v1()];
-module _v20() { square(center=_v0(), size=_v19()); }
-module _v21 (x=undef) { translate([x, 0, 0]) children(); }
-module _v22() { _v21(x=_v6()) children(); }
-module _v23() { _v22() _v20(); }
-module _v24() { union() { _v18(); _v23(); }; }
-module _v25 () { if($preview) { children(); } }
-module _v26() { _v25() _v24(); }
-module _v27() { union() { _v12(); _v26(); }; }
-module _v28() { _v7() _v27(); }
-module _v29() { _v10() _v28(); }
-function _v30() = 100;
-module _v31() { _v21(x=_v30()) children(); }
-module _v32() { _v31() _v29(); }
-module _v33() { rotate_extrude() _v32(); }
+module _v12() { difference() { _v2(); _v11(); }; }
+function _v13() = [10,0.01];
+module _v14() { square(center=_v0(), size=_v13()); }
+module _v15 (y=undef) { translate([0, y, 0]) children(); }
+module _v16() { _v15(y=_v6()) children(); }
+module _v17() { _v16() _v14(); }
+function _v18() = [0.01,10];
+module _v19() { square(center=_v0(), size=_v18()); }
+module _v20 (x=undef) { translate([x, 0, 0]) children(); }
+module _v21() { _v20(x=_v6()) children(); }
+module _v22() { _v21() _v19(); }
+module _v23() { union() { _v17(); _v22(); }; }
+module _v24 () { if($preview) { children(); } }
+module _v25() { _v24() _v23(); }
+module _v26() { union() { _v12(); _v25(); }; }
+module _v27() { _v7() _v26(); }
+module _v28() { _v10() _v27(); }
+function _v29() = 100;
+module _v30() { _v20(x=_v29()) children(); }
+module _v31() { _v30() _v28(); }
+module _v32() { rotate_extrude() _v31(); }
 
-_v33();
+_v32();

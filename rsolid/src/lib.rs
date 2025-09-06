@@ -53,7 +53,7 @@ pub fn export<V: scad::Scad>(v: &V, path: &std::path::Path, renders: &[&str]) {
             .arg(ext)
             .arg("--render")
             .arg("true")
-            .arg("--enable")
+            .arg("--backend")
             .arg("manifold")
             .arg(&scad)
             .stderr(std::process::Stdio::inherit())

@@ -81,6 +81,10 @@ impl Render<'_> {
                         *prev, *start, *end, *next, tension.0, n, steps,
                     ));
                 }
+                Command::Stroke { .. } => {
+                    // TODO should this apply to polygons?
+                    continue;
+                }
             }
         }
     }
