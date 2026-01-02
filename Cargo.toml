@@ -1,6 +1,6 @@
 [workspace]
 members = [
     "rsolid",
-    "rsolid-bindgen", "xtask",
+    "rsolid-bindgen", "rsolid-manifold", "xtask",
 ]
 resolver = "2"
