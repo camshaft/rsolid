@@ -35,7 +35,7 @@ fn main() {
     print_measurements(&union, "Union");
 
     // Demonstrate scaling based on measurements
-    let dims = cube.dimensions();
+    let _original_dims = cube.dimensions(); // Could use this for dynamic scaling
     let scale_factor = 2.0;
     let scaled = ManifoldBuilder::cube(10.0, 10.0, 10.0).scale(scale_factor, scale_factor, scale_factor);
     println!("\nScaled cube by factor of {}", scale_factor);
