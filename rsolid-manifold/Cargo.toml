@@ -21,7 +21,6 @@ name = "rsolid_manifold"
 path = "src/lib.rs"
 
 [dependencies]
-rsolid = { path = "../rsolid" }
 cxx = "1.0"
 cgmath = { version = "0.18.0", optional = true }
 

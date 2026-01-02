@@ -9,6 +9,8 @@ mod extension;
 mod helpers;
 pub mod import;
 pub mod mask;
+#[cfg(feature = "manifold")]
+pub mod manifold;
 mod object;
 mod operator;
 mod parameter;

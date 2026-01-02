@@ -4,5 +4,12 @@ version = "0.1.0"
 edition = "2021"
 license = "MIT"
 
+[dependencies]
+rsolid-manifold = { path = "../rsolid-manifold", optional = true }
+
+[features]
+default = []
+manifold = ["rsolid-manifold"]
+
 [dev-dependencies]
 insta = { version = "1", default-features = false }
